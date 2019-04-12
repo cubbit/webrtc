@@ -89,7 +89,7 @@ endif(NOT WEBRTC_REVISION)
 set(WEBRTC_SYNC ${GCLIENT_EXECUTABLE} sync
     --verbose
     --nohooks
-    --no-history
+    # --no-history
     --with_branch_heads
     --delete_unversioned_trees
     --revision ${WEBRTC_REVISION}
