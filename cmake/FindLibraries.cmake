@@ -1,6 +1,6 @@
 if(UNIX AND NOT APPLE)
-    # find_package(X11 REQUIRED)
-    list(APPEND WEBRTC_LIBRARIES ${CMAKE_DL_LIBS} rt) #${X11_LIBRARIES}
+    find_package(X11 REQUIRED)
+    list(APPEND WEBRTC_LIBRARIES ${CMAKE_DL_LIBS} ${X11_LIBRARIES} rt)
 
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)

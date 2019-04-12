@@ -89,6 +89,7 @@ endif(NOT WEBRTC_REVISION)
 set(WEBRTC_SYNC ${GCLIENT_EXECUTABLE} sync
     --verbose
     --nohooks
+    --no-history
     --with_branch_heads
     --delete_unversioned_trees
     --revision ${WEBRTC_REVISION}
@@ -104,11 +105,11 @@ webrtc_command(
 )
 
 # GClient runhooks
-set(ENV{GYP_DEFINES} “target_arch=x64”)
-# if(APPLE)
-# else()
-#     set(ENV{GYP_DEFINES} “target_arch=ia32”)
-# endif()
+if(APPLE)
+    set(ENV{GYP_DEFINES} “target_arch=x64”)
+else()
+    set(ENV{GYP_DEFINES} “target_arch=ia32”)
+endif()
 
 set(WEBRTC_HOOKS ${GCLIENT_EXECUTABLE} runhooks)
 
@@ -116,7 +117,7 @@ webrtc_command(
     NAME webrtc-hooks
     COMMAND ${WEBRTC_HOOKS}
     DEPENDS webrtc-sync
-    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/webrtc"o
+    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/webrtc"
     COMMENT "Running webrtc hooks"
     ERROR "Unable to run webrtc hooks"
 )
@@ -156,8 +157,12 @@ webrtc_command(
     ERROR "Unable to build webrtc"
 )
 
+if(NOT CMAKE_INSTALL_PREFIX)
+    set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/webrtc)
+endif()
+
 # Create lib folder
-set(WEBRTC_LIB_CREATE mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/webrtc/lib)
+set(WEBRTC_LIB_CREATE mkdir -p ${CMAKE_INSTALL_PREFIX}/lib)
 
 webrtc_command(
     NAME webrtc-lib-create
@@ -168,7 +173,7 @@ webrtc_command(
 )
 
 # Copy lib
-set(WEBRTC_LIB_COPY cp ${CMAKE_CURRENT_BINARY_DIR}/webrtc/src/out/${CMAKE_BUILD_TYPE}/obj/libwebrtc.a ${CMAKE_CURRENT_BINARY_DIR}/webrtc/lib/)
+set(WEBRTC_LIB_COPY cp ${CMAKE_CURRENT_BINARY_DIR}/webrtc/src/out/${CMAKE_BUILD_TYPE}/obj/libwebrtc.a $${CMAKE_INSTALL_PREFIX}/lib/)
 
 webrtc_command(
     NAME webrtc-lib-copy
@@ -179,7 +184,7 @@ webrtc_command(
 )
 
 # Create header folder
-set(WEBRTC_HEADER_CREATE mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/webrtc/include/webrtc)
+set(WEBRTC_HEADER_CREATE mkdir -p ${CMAKE_INSTALL_PREFIX}/include/webrtc)
 
 webrtc_command(
     NAME webrtc-header-create
@@ -191,7 +196,7 @@ webrtc_command(
 
 # Copy header folder
 set(WEBRTC_HEADER_COPY cd ${CMAKE_CURRENT_BINARY_DIR}/webrtc/src && 
-    find . -name '*.h' | cpio -pdm ${CMAKE_CURRENT_BINARY_DIR}/webrtc/include/webrtc/
+    find . -name '*.h' | cpio -pdm ${CMAKE_INSTALL_PREFIX}/include/webrtc/
 )
 
 webrtc_command(
@@ -203,5 +208,5 @@ webrtc_command(
     ERROR "Unable to copy webrtc headers"
 )
 
-set(WEBRTC_INCLUDES ${CMAKE_CURRENT_BINARY_DIR}/webrtc/include ${CMAKE_CURRENT_BINARY_DIR}/webrtc/include/webrtc ${CMAKE_CURRENT_BINARY_DIR}/webrtc/include/webrtc/third_party/abseil-cpp)
-set(WEBRTC_LIBRARIES ${WEBRTC_LIBRARIES} ${CMAKE_CURRENT_BINARY_DIR}/webrtc/lib/libwebrtc.a)
+# set(WEBRTC_INCLUDES ${CMAKE_CURRENT_BINARY_DIR}/webrtc/include ${CMAKE_CURRENT_BINARY_DIR}/webrtc/include/webrtc ${CMAKE_CURRENT_BINARY_DIR}/webrtc/include/webrtc/third_party/abseil-cpp)
+# set(WEBRTC_LIBRARIES ${WEBRTC_LIBRARIES} ${CMAKE_CURRENT_BINARY_DIR}/webrtc/lib/libwebrtc.a)

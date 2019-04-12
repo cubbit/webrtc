@@ -1,8 +1,8 @@
-FROM alpine
+FROM ubuntu:latest
 
-RUN apk update
-RUN apk upgrade
-RUN apk add alpine-sdk bash bash-doc bash-completion git clang make cmake libstdc++ python tar xz
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y git make cmake python clang libgtk2.0-dev libx11-dev cpio
 
 VOLUME [ "/usr/src/webrtc" ]
 WORKDIR /usr/src/webrtc
