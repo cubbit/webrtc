@@ -56,11 +56,12 @@ include(Options)
 include(FindLibraries)
 include(WebrtcCommand)
 
+set(WEBRTC_FOLDER ${CMAKE_CURRENT_BINARY_DIR}/webrtc)
 if(WIN32)
-    set(WEBRTC_FOLDER ${CMAKE_CURRENT_BINARY_DIR}\\webrtc)
+    string(REGEX REPLACE "/" "\\" WEBRTC_FOLDER ${WEBRTC_FOLDER})
     set(CREATE_FOLDER_COMMAND if not exist ${WEBRTC_FOLDER} md ${WEBRTC_FOLDER})
 else()
-    set(CREATE_FOLDER_COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/webrtc)
+    set(CREATE_FOLDER_COMMAND mkdir -p ${WEBRTC_FOLDER})
 endif()
 
 # Create Webrtc folder
