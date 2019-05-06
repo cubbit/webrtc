@@ -42,7 +42,7 @@ if(NOT HAS_OWN_DEPOT_TOOLS)
     ExternalProject_Add(depot-tools
         GIT_REPOSITORY ${DEPOT_TOOLS_REPO}
         PREFIX ${CMAKE_BINARY_DIR}/depot_tools
-        
+
         CONFIGURE_COMMAND ""
         UPDATE_COMMAND ""
         PATCH_COMMAND ""
@@ -56,10 +56,16 @@ include(Options)
 include(FindLibraries)
 include(WebrtcCommand)
 
+if(WIN32)
+    set(CREATE_FOLDER_COMMAND md ${CMAKE_CURRENT_BINARY_DIR}/webrtc)
+else()
+    set(CREATE_FOLDER_COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/webrtc)
+endif()
+
 # Create Webrtc folder
 webrtc_command(
     NAME webrtc-create-folder
-    COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/webrtc
+    COMMAND ${CREATE_FOLDER_COMMAND}
     COMMENT "Creating folder webrtc"
     ERROR "Unable to create folder webrtc"
     DEPENDS depot-tools
@@ -127,8 +133,8 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-set(WEBRTC_PREPARE ${GN_EXECUTABLE} gen out/${CMAKE_BUILD_TYPE} 
-    --verbose 
+set(WEBRTC_PREPARE ${GN_EXECUTABLE} gen out/${CMAKE_BUILD_TYPE}
+    --verbose
     --args="is_debug=false"
 )
 
@@ -140,7 +146,7 @@ webrtc_command(
     COMMENT "Generating webrtc build"
     ERROR "Unable to generate webrtc build"
 )
-    
+
 # Build
 if(NOT WEBRTC_TARGET)
     set(WEBRTC_TARGET webrtc)
@@ -195,7 +201,7 @@ webrtc_command(
 )
 
 # Copy header folder
-set(WEBRTC_HEADER_COPY cd ${CMAKE_CURRENT_BINARY_DIR}/webrtc/src && 
+set(WEBRTC_HEADER_COPY cd ${CMAKE_CURRENT_BINARY_DIR}/webrtc/src &&
     find . -name '*.h' | cpio -pdm ${CMAKE_INSTALL_PREFIX}/include/webrtc/
 )
 
