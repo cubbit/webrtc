@@ -58,7 +58,7 @@ include(WebrtcCommand)
 
 set(WEBRTC_FOLDER ${CMAKE_CURRENT_BINARY_DIR}/webrtc)
 if(WIN32)
-    string(REGEX REPLACE "/" "\\" WEBRTC_FOLDER ${WEBRTC_FOLDER})
+    string(REGEX REPLACE "/" "\\\\" WEBRTC_FOLDER ${WEBRTC_FOLDER})
     set(CREATE_FOLDER_COMMAND if not exist ${WEBRTC_FOLDER} md ${WEBRTC_FOLDER})
 else()
     set(CREATE_FOLDER_COMMAND mkdir -p ${WEBRTC_FOLDER})
