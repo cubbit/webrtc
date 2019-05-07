@@ -1,4 +1,4 @@
-include(CMakeParseArguments) 
+include(CMakeParseArguments)
 
 # Include guard
 if(LIBWEBRTC_COMMAND_INCLUDED)
@@ -19,7 +19,7 @@ function(webrtc_command)
     set(STAMP_FILE "${STAMP_DIR}/${COMMAND_NAME}-complete")
 
     if(WIN32)
-        set(COMMAND_COMMAND cmd /c ${COMMAND_COMMAND})
+        set(COMMAND_COMMAND cmd /c "${COMMAND_COMMAND}")
     endif()
 
     add_custom_command(
@@ -31,7 +31,7 @@ function(webrtc_command)
     )
 
     add_custom_target(${COMMAND_NAME} ALL DEPENDS ${STAMP_FILE})
-    
+
     if (COMMAND_DEPENDS)
         add_dependencies(${COMMAND_NAME} ${COMMAND_DEPENDS})
     endif (COMMAND_DEPENDS)

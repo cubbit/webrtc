@@ -76,7 +76,6 @@ webrtc_command(
 
 # GClient configuration
 set(WEBRTC_CONFIG ${GCLIENT_EXECUTABLE} config
-    --unmanaged
     --name src
     --verbose
     ${WEBRTC_URL}
@@ -84,7 +83,7 @@ set(WEBRTC_CONFIG ${GCLIENT_EXECUTABLE} config
 
 webrtc_command(
     NAME webrtc-configuration
-    COMMAND ${WEBRTC_CONFIG}
+    COMMAND ${WEBRTC_CONFIG} || exit 0
     DEPENDS webrtc-create-folder
     WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/webrtc"
     COMMENT "Configuring webrtc"
