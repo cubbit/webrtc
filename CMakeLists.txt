@@ -76,6 +76,7 @@ webrtc_command(
 
 # GClient configuration
 set(WEBRTC_CONFIG ${GCLIENT_EXECUTABLE} config
+    --unmanaged
     --name src
     --verbose
     ${WEBRTC_URL}
