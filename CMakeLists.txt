@@ -91,13 +91,13 @@ webrtc_command(
 
 # GClient sync
 if(NOT WEBRTC_REVISION)
-    set(WEBRTC_REVISION 8bb9968) #m73
+    set(WEBRTC_REVISION branch-heads/m74)
 endif(NOT WEBRTC_REVISION)
 
 set(WEBRTC_SYNC ${GCLIENT_EXECUTABLE} sync
     --verbose
     --nohooks
-    # --no-history
+    --no-history
     --with_branch_heads
     --delete_unversioned_trees
     --revision ${WEBRTC_REVISION}
