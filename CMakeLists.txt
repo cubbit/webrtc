@@ -49,6 +49,7 @@ if(NOT HAS_OWN_DEPOT_TOOLS)
         BUILD_COMMAND ""
         INSTALL_COMMAND ""
     )
+    file(REMOVE_RECURSE ${CMAKE_BINARY_DIR}/depot_tools/.git)
 endif(NOT HAS_OWN_DEPOT_TOOLS)
 
 # Includes
