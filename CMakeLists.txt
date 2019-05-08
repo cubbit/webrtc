@@ -16,42 +16,30 @@ set(CMAKE_MODULE_PATH
 find_package(Git REQUIRED)
 include(ExternalProject)
 
-if(HAS_OWN_DEPOT_TOOLS)
-    # If user provide his own depot_tools
-    find_package(DepotTools REQUIRED)
-endif(HAS_OWN_DEPOT_TOOLS)
+set(DEPOT_TOOLS_REPO https://chromium.googlesource.com/chromium/tools/depot_tools.git)
+set(DEPOT_TOOLS_PATH ${CMAKE_BINARY_DIR}/depot_tools/src/depot-tools CACHE PATH "")
 
-if(NOT WIN32)
-    find_package(PythonInterp 2.7 REQUIRED)
-endif(NOT WIN32)
+if(WIN32)
+    string(REGEX REPLACE "/" "\\\\" DEPOT_TOOLS_PATH ${DEPOT_TOOLS_PATH})
+    set(GCLIENT_EXECUTABLE ${DEPOT_TOOLS_PATH}/gclient.bat)
+    set(GN_EXECUTABLE ${DEPOT_TOOLS_PATH}/gn.bat)
+    set(NINJA_EXECUTABLE ${DEPOT_TOOLS_PATH}/ninja.exe)
+else(WIN32)
+    set(GCLIENT_EXECUTABLE ${DEPOT_TOOLS_PATH}/gclient)
+    set(GN_EXECUTABLE ${DEPOT_TOOLS_PATH}/gn)
+    set(NINJA_EXECUTABLE ${DEPOT_TOOLS_PATH}/ninja)
+endif(WIN32)
 
-if(NOT HAS_OWN_DEPOT_TOOLS)
-    set(DEPOT_TOOLS_REPO https://chromium.googlesource.com/chromium/tools/depot_tools.git)
-    set(DEPOT_TOOLS_PATH ${CMAKE_BINARY_DIR}/depot_tools/src/depot-tools)
+ExternalProject_Add(depot-tools
+    GIT_REPOSITORY ${DEPOT_TOOLS_REPO}
+    PREFIX ${CMAKE_BINARY_DIR}/depot_tools
 
-    if(WIN32)
-        string(REGEX REPLACE "/" "\\\\" DEPOT_TOOLS_PATH ${DEPOT_TOOLS_PATH})
-        set(GCLIENT_EXECUTABLE ${DEPOT_TOOLS_PATH}/gclient.bat)
-        set(GN_EXECUTABLE ${DEPOT_TOOLS_PATH}/gn.bat)
-        set(NINJA_EXECUTABLE ${DEPOT_TOOLS_PATH}/ninja.exe)
-    else(WIN32)
-        set(GCLIENT_EXECUTABLE ${DEPOT_TOOLS_PATH}/gclient)
-        set(GN_EXECUTABLE ${DEPOT_TOOLS_PATH}/gn)
-        set(NINJA_EXECUTABLE ${DEPOT_TOOLS_PATH}/ninja)
-    endif(WIN32)
-
-    ExternalProject_Add(depot-tools
-        GIT_REPOSITORY ${DEPOT_TOOLS_REPO}
-        PREFIX ${CMAKE_BINARY_DIR}/depot_tools
-
-        CONFIGURE_COMMAND ""
-        UPDATE_COMMAND ""
-        PATCH_COMMAND ""
-        BUILD_COMMAND ""
-        INSTALL_COMMAND ""
-    )
-    file(REMOVE_RECURSE ${CMAKE_BINARY_DIR}/depot_tools/.git)
-endif(NOT HAS_OWN_DEPOT_TOOLS)
+    CONFIGURE_COMMAND ""
+    UPDATE_COMMAND ""
+    PATCH_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
+)
 
 # Includes
 include(Options)
