@@ -30,9 +30,10 @@ if(NOT HAS_OWN_DEPOT_TOOLS)
     set(DEPOT_TOOLS_PATH ${CMAKE_BINARY_DIR}/depot_tools/src/depot-tools)
 
     if(WIN32)
+        string(REGEX REPLACE "/" "\\\\" DEPOT_TOOLS_PATH ${DEPOT_TOOLS_PATH})
         set(GCLIENT_EXECUTABLE ${DEPOT_TOOLS_PATH}/gclient.bat)
         set(GN_EXECUTABLE ${DEPOT_TOOLS_PATH}/gn.bat)
-        set(NINJA_EXECUTABLE ${DEPOT_TOOLS_PATH}/ninja.bat)
+        set(NINJA_EXECUTABLE ${DEPOT_TOOLS_PATH}/ninja.exe)
     else(WIN32)
         set(GCLIENT_EXECUTABLE ${DEPOT_TOOLS_PATH}/gclient)
         set(GN_EXECUTABLE ${DEPOT_TOOLS_PATH}/gn)
@@ -83,7 +84,7 @@ set(WEBRTC_CONFIG ${GCLIENT_EXECUTABLE} config
 
 webrtc_command(
     NAME webrtc-configuration
-    COMMAND ${WEBRTC_CONFIG} || exit 0
+    COMMAND ${WEBRTC_CONFIG}
     DEPENDS webrtc-create-folder
     WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/webrtc"
     COMMENT "Configuring webrtc"
@@ -133,12 +134,32 @@ webrtc_command(
 
 # Build generation
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+if(NOT WEBRTC_GEN_ARGS)
+    list(APPEND WEBRTC_GEN_ARGS
+        rtc_build_examples=false
+        rtc_use_x11=false
+        rtc_enable_protobuf=false
+        rtc_use_gtk=false
+        rtc_include_pulse_audio=false
+        rtc_include_tests=false
+        rtc_build_tools=false
+    )
+
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        list(APPEND WEBRTC_GEN_ARGS is_debug=true)
+    else()
+        list(APPEND WEBRTC_GEN_ARGS is_debug=false)
+    endif()
+
+    string(REPLACE ";" " " WEBRTC_GEN_ARGS "${WEBRTC_GEN_ARGS}")
 endif()
 
 set(WEBRTC_PREPARE ${GN_EXECUTABLE} gen out/${CMAKE_BUILD_TYPE}
     --verbose
-    --args="is_debug=false"
+    --args="${WEBRTC_GEN_ARGS}"
 )
 
 webrtc_command(
@@ -152,7 +173,7 @@ webrtc_command(
 
 # Build
 if(NOT WEBRTC_TARGET)
-    set(WEBRTC_TARGET webrtc)
+    set(WEBRTC_TARGET webrtc libjingle_peerconnection)
 endif(NOT WEBRTC_TARGET)
 
 set(WEBRTC_BUILD ${NINJA_EXECUTABLE} -v -C out/${CMAKE_BUILD_TYPE} ${WEBRTC_TARGET})
@@ -171,7 +192,13 @@ if(NOT CMAKE_INSTALL_PREFIX)
 endif()
 
 # Create lib folder
-set(WEBRTC_LIB_CREATE mkdir -p ${CMAKE_INSTALL_PREFIX}/lib)
+set(WEBRTC_LIB_FOLDER ${CMAKE_INSTALL_PREFIX}/lib)
+if(WIN32)
+    string(REGEX REPLACE "/" "\\\\" WEBRTC_LIB_FOLDER ${WEBRTC_LIB_FOLDER})
+    set(WEBRTC_LIB_CREATE if not exist ${WEBRTC_LIB_FOLDER} md ${WEBRTC_LIB_FOLDER})
+else()
+    set(WEBRTC_LIB_CREATE mkdir -p ${WEBRTC_LIB_FOLDER})
+endif()
 
 webrtc_command(
     NAME webrtc-lib-create
@@ -182,7 +209,13 @@ webrtc_command(
 )
 
 # Copy lib
-set(WEBRTC_LIB_COPY cp ${CMAKE_CURRENT_BINARY_DIR}/webrtc/src/out/${CMAKE_BUILD_TYPE}/obj/libwebrtc.a $${CMAKE_INSTALL_PREFIX}/lib/)
+if(WIN32)
+    set(WEBRTC_LIB_SOURCE "${CMAKE_CURRENT_BINARY_DIR}/webrtc/src/out/${CMAKE_BUILD_TYPE}/obj")
+    string(REGEX REPLACE "/" "\\\\" WEBRTC_LIB_SOURCE ${WEBRTC_LIB_SOURCE})
+    set(WEBRTC_LIB_COPY robocopy ${WEBRTC_LIB_SOURCE} ${WEBRTC_LIB_FOLDER} *.lib /mir /lev:1 || exit 0)
+else()
+    set(WEBRTC_LIB_COPY cp ${CMAKE_CURRENT_BINARY_DIR}/webrtc/src/out/${CMAKE_BUILD_TYPE}/obj/*.a ${WEBRTC_LIB_FOLDER})
+endif()
 
 webrtc_command(
     NAME webrtc-lib-copy
@@ -193,7 +226,13 @@ webrtc_command(
 )
 
 # Create header folder
-set(WEBRTC_HEADER_CREATE mkdir -p ${CMAKE_INSTALL_PREFIX}/include/webrtc)
+set(WEBRTC_HEADER_FOLDER ${CMAKE_INSTALL_PREFIX}/include/webrtc)
+if(WIN32)
+    string(REGEX REPLACE "/" "\\\\" WEBRTC_HEADER_FOLDER ${WEBRTC_HEADER_FOLDER})
+    set(WEBRTC_HEADER_CREATE if not exist ${WEBRTC_HEADER_FOLDER} md ${WEBRTC_HEADER_FOLDER})
+else()
+    set(WEBRTC_HEADER_CREATE mkdir -p ${WEBRTC_HEADER_FOLDER})
+endif()
 
 webrtc_command(
     NAME webrtc-header-create
@@ -204,18 +243,19 @@ webrtc_command(
 )
 
 # Copy header folder
-set(WEBRTC_HEADER_COPY cd ${CMAKE_CURRENT_BINARY_DIR}/webrtc/src &&
-    find . -name '*.h' | cpio -pdm ${CMAKE_INSTALL_PREFIX}/include/webrtc/
-)
+if(WIN32)
+    set(WEBRTC_HEADER_SOURCE "${CMAKE_CURRENT_BINARY_DIR}/webrtc/src/")
+    string(REGEX REPLACE "/" "\\\\" WEBRTC_HEADER_SOURCE ${WEBRTC_HEADER_SOURCE})
+    set(WEBRTC_HEADER_COPY robocopy ${WEBRTC_HEADER_SOURCE} ${WEBRTC_HEADER_FOLDER} *.h /mir || exit 0)
+else()
+    set(WEBRTC_HEADER_COPY cd ${CMAKE_CURRENT_BINARY_DIR}/webrtc/src && find . -name '*.h' | cpio -pdm ${CMAKE_INSTALL_PREFIX}/include/webrtc/)
+endif()
 
 webrtc_command(
-    NAME webrtc
+    NAME webrtc-header-copy
     COMMAND ${WEBRTC_HEADER_COPY}
     DEPENDS webrtc-header-create
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/webrtc/src
     COMMENT "Copying webrtc headers"
     ERROR "Unable to copy webrtc headers"
 )
-
-# set(WEBRTC_INCLUDES ${CMAKE_CURRENT_BINARY_DIR}/webrtc/include ${CMAKE_CURRENT_BINARY_DIR}/webrtc/include/webrtc ${CMAKE_CURRENT_BINARY_DIR}/webrtc/include/webrtc/third_party/abseil-cpp)
-# set(WEBRTC_LIBRARIES ${WEBRTC_LIBRARIES} ${CMAKE_CURRENT_BINARY_DIR}/webrtc/lib/libwebrtc.a)

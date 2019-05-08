@@ -14,7 +14,7 @@ else()
 endif()
 
 # Set custom env variable
-set(_ENV PATH="${_WEBRTC_PATH}")
+set(_ENV DEPOT_TOOLS_WIN_TOOLCHAIN=0 PATH="${_WEBRTC_PATH}")
 
 # Set prefix execute
 set(PREFIX_EXECUTE ${CMAKE_COMMAND} -E env "${_ENV}")
