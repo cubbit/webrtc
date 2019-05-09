@@ -81,6 +81,7 @@ CMakeCache.txt
 CMakeFiles
 CMakeScripts
 Testing
+Makefile
 cmake_install.cmake
 install_manifest.txt
 compile_commands.json
@@ -172,4 +173,4 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/c,c++,cmake,linux,macos,windows,visualstudiocode
 
-build
+build/

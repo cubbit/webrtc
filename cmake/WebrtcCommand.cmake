@@ -1,15 +1,23 @@
+
+include_guard(GLOBAL)
+
 include(CMakeParseArguments)
 
-# Include guard
-if(LIBWEBRTC_COMMAND_INCLUDED)
-    return()
-endif(LIBWEBRTC_COMMAND_INCLUDED)
-set(LIBWEBRTC_COMMAND_INCLUDED true)
+list(APPEND _WEBRTC_PATH ${DEPOT_TOOLS_PATH} $ENV{PATH})
 
-# Set environment for script calls
-include(Environment)
+if(WIN32)
+    string(REGEX REPLACE ";" $<SEMICOLON> _WEBRTC_PATH "${_WEBRTC_PATH}")
+else()
+    string(REGEX REPLACE ";" ":" _WEBRTC_PATH "${_WEBRTC_PATH}")
+endif()
 
-# Function declaration
+if(WIN32)
+    list(APPEND _ENV DEPOT_TOOLS_WIN_TOOLCHAIN=0)
+endif()
+list(APPEND _ENV PATH="${_WEBRTC_PATH}")
+
+set(PREFIX_EXECUTE ${CMAKE_COMMAND} -E env "${_ENV}")
+
 function(webrtc_command)
     set(ONE_VALUE_ARGS NAME COMMENT WORKING_DIRECTORY)
     set(LIST_ARGS COMMAND DEPENDS)
