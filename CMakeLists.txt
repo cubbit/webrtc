@@ -45,6 +45,26 @@ webrtc_command(
     DEPENDS config
 )
 
+if(WIN32)
+    set(PLATFORM win32)
+    set(GN_SHA_PATH src/buildtools/win/gn.exe.sha1)
+elseif(APPLE)
+    set(PLATFORM darwin)
+    set(GN_SHA_PATH src/buildtools/mac/gn.sha1)
+else()
+    set(PLATFORM linux)
+    set(GN_SHA_PATH src/buildtools/linux64/gn.sha1)
+endif()
+set(WEBRTC_SYNC_COMMAND "download_from_google_storage --no_resume --platform=${PLATFORM} --no_auth --bucket chromium-gn -s ${GN_SHA_PATH}")
+webrtc_command(
+    NAME gn
+    COMMAND ${WEBRTC_SYNC_COMMAND}
+    WORKING_DIRECTORY ${WEBRTC_FOLDER}
+    DEPENDS sync
+)
+
+
+
 # download_from_google_storage --no_resume --platform=win32 --no_auth --bucket chromium-gn -s src/buildtools/win/gn.exe.sha1
 # download_from_google_storage --no_resume --platform=darwin --no_auth --bucket chromium-gn -s src/buildtools/mac/gn.sha1
 # download_from_google_storage --no_resume --platform=linux --no_auth --bucket chromium-gn -s src/buildtools/linux64/gn.sha1
