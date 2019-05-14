@@ -1,4 +1,5 @@
-set(WEBRTC_PACK ${CMAKE_INSTALL_PREFIX}/webrtc.zip)
+set(WEBRTC_PACK_NAME webrtc.zip)
+set(WEBRTC_PACK ${CMAKE_INSTALL_PREFIX}/${WEBRTC_PACK_NAME})
 
 add_custom_command(
     OUTPUT ${WEBRTC_PACK}
