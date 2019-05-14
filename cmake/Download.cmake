@@ -37,7 +37,7 @@ webrtc_command(
     NAME download-ciopfs
     COMMAND ${WEBRTC_DOWNLOAD_CIOPFS_COMMAND}
     WORKING_DIRECTORY ${WEBRTC_FOLDER}
-    DEPENDS sync
+    DEPENDS download-gn
 )
 
 set(WEBRTC_UPDATE_CLANG_COMMAND "python src/tools/clang/scripts/update.py")
