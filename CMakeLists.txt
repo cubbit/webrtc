@@ -9,7 +9,8 @@ find_package(Git REQUIRED)
 
 include(DepotTools)
 
-set(WEBRTC_REVISION branch-heads/m74)
+set(WEBRTC_REVISION m74)
+set(WEBRTC_GIT_REVISION branch-heads/${WEBRTC_REVISION})
 
 set(WEBRTC_FOLDER ${CMAKE_CURRENT_BINARY_DIR}/webrtc)
 file(MAKE_DIRECTORY ${WEBRTC_FOLDER})
@@ -17,7 +18,7 @@ file(MAKE_DIRECTORY ${WEBRTC_FOLDER})
 set(WEBRTC_LIB_FOLDER ${CMAKE_INSTALL_PREFIX}/lib)
 file(MAKE_DIRECTORY ${WEBRTC_LIB_FOLDER})
 
-set(WEBRTC_HEADERS_FOLDER ${CMAKE_INSTALL_PREFIX}/include)
+set(WEBRTC_HEADERS_FOLDER ${CMAKE_INSTALL_PREFIX}/include/webrtc)
 file(MAKE_DIRECTORY ${WEBRTC_HEADERS_FOLDER})
 
 list(APPEND WEBRTC_GEN_ARGS
@@ -31,8 +32,10 @@ list(APPEND WEBRTC_GEN_ARGS
 )
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(WEBRTC_BUILD_TYPE debug)
     list(APPEND WEBRTC_GEN_ARGS is_debug=true)
 else()
+    set(WEBRTC_BUILD_TYPE release)
     list(APPEND WEBRTC_GEN_ARGS is_debug=false)
 endif()
 
@@ -45,6 +48,7 @@ string(REPLACE ";" " " WEBRTC_GEN_ARGS "${WEBRTC_GEN_ARGS}")
 set(WEBTC_TARGET webrtc libjingle_peerconnection)
 
 include(WebrtcCommand)
+
 include(Download)
 include(Configure)
 include(Build)

@@ -6,7 +6,7 @@ webrtc_command(
     DEPENDS depot-tools
 )
 
-set(WEBRTC_SYNC_COMMAND "gclient sync --revision ${WEBRTC_REVISION} --nohooks --reset --no-history --shallow")
+set(WEBRTC_SYNC_COMMAND "gclient sync --revision ${WEBRTC_GIT_REVISION} --nohooks --reset --no-history --shallow")
 webrtc_command(
     NAME sync
     COMMAND ${WEBRTC_SYNC_COMMAND}
@@ -15,16 +15,16 @@ webrtc_command(
 )
 
 if(WIN32)
-    set(PLATFORM win32)
-    set(GN_SHA_PATH src/buildtools/win/gn.exe.sha1)
+    set(WEBRTC_PLATFORM win32)
+    set(WEBRTC_GN_SHA_PATH src/buildtools/win/gn.exe.sha1)
 elseif(APPLE)
-    set(PLATFORM darwin)
-    set(GN_SHA_PATH src/buildtools/mac/gn.sha1)
+    set(WEBRTC_PLATFORM darwin)
+    set(WEBRTC_GN_SHA_PATH src/buildtools/mac/gn.sha1)
 else()
-    set(PLATFORM linux)
-    set(GN_SHA_PATH src/buildtools/linux64/gn.sha1)
+    set(WEBRTC_PLATFORM linux)
+    set(WEBRTC_GN_SHA_PATH src/buildtools/linux64/gn.sha1)
 endif()
-set(WEBRTC_DOWNLOAD_GN_COMMAND "download_from_google_storage --no_resume --platform=${PLATFORM} --no_auth --bucket chromium-gn -s ${GN_SHA_PATH}")
+set(WEBRTC_DOWNLOAD_GN_COMMAND "download_from_google_storage --no_resume --platform=${WEBRTC_PLATFORM} --no_auth --bucket chromium-gn -s ${WEBRTC_GN_SHA_PATH}")
 webrtc_command(
     NAME download-gn
     COMMAND ${WEBRTC_DOWNLOAD_GN_COMMAND}

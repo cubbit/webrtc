@@ -6,7 +6,7 @@ webrtc_command(
     DEPENDS download
 )
 
-set(WEBRTC_CONFIGURE_COMMAND "gn gen out/${CMAKE_BUILD_TYPE} --args=\"${WEBRTC_GEN_ARGS}\"")
+set(WEBRTC_CONFIGURE_COMMAND "gn gen out/${WEBRTC_BUILD_TYPE} --args=\"${WEBRTC_GEN_ARGS}\"")
 webrtc_command(
     NAME gen
     COMMAND ${WEBRTC_CONFIGURE_COMMAND}

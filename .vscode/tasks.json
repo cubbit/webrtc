@@ -2,45 +2,36 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "configure",
+            "label": "configure:release",
             "type": "shell",
-            "command": "cmake -S. -Bbuild -DCMAKE_INSTALL_PREFIX=build",
+            "command": "cmake -S. -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Release",
             "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceFolder}/"
             }
         },
         {
-            "label": "build:release",
+            "label": "configure:debug",
             "type": "shell",
-            "command": "cmake --build ./build --config Release -- -j 16",
-            "problemMatcher": ["$gcc"],
-            "options": {
-                "cwd": "${workspaceFolder}/"
-            }
-        },
-        {
-            "label": "build:debug",
-            "type": "shell",
-            "command": "cmake --build ./build --config Debug -- -j 16",
-            "problemMatcher": ["$gcc"],
-            "options": {
-                "cwd": "${workspaceFolder}/"
-            }
-        },
-        {
-            "label": "pack:release",
-            "type": "shell",
-            "command": "cmake --build ./build --config Release --target pack -- -j 16",
+            "command": "cmake -S. -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug",
             "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceFolder}/"
             }
         },
         {
-            "label": "pack:debug",
+            "label": "build",
             "type": "shell",
-            "command": "cmake --build ./build --config Debug --target pack -- -j 16",
+            "command": "cmake --build ./build -- -j 16",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}/"
+            }
+        },
+        {
+            "label": "pack",
+            "type": "shell",
+            "command": "cmake --build ./build --target pack -- -j 16",
             "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceFolder}/"
