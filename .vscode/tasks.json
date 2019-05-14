@@ -1,0 +1,32 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "configure",
+            "type": "shell",
+            "command": "cmake -S. -Bbuild",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}/"
+            }
+        },
+        {
+            "label": "build:release",
+            "type": "shell",
+            "command": "cmake --build ./build --config Release --target peer -- -j 16",
+            "problemMatcher": ["$gcc"],
+            "options": {
+                "cwd": "${workspaceFolder}/"
+            }
+        },
+        {
+            "label": "build:debug",
+            "type": "shell",
+            "command": "cmake --build ./build --config Debug --target peer -- -j 16",
+            "problemMatcher": ["$gcc"],
+            "options": {
+                "cwd": "${workspaceFolder}/"
+            }
+        }
+    ]
+}

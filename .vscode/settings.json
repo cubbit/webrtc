@@ -1,5 +1,7 @@
 {
     "files.watcherExclude": {
         "build/": true
-    }
+    },
+    "npm.autoDetect": "off",
+    "typescript.tsc.autoDetect": "off"
 }

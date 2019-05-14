@@ -48,8 +48,22 @@ webrtc_command(
     DEPENDS sync
 )
 
+set(WEBRTC_DOWNLOAD_DEPENDS config sync download-gn download-ciopfs update-clang)
+
+if(WIN32)
+    set(WEBRTC_UPDATE_VS_COMMAND "python src/build/vs_toolchain.py update --force")
+    webrtc_command(
+        NAME update-vs
+        COMMAND ${WEBRTC_UPDATE_VS_COMMAND}
+        WORKING_DIRECTORY ${WEBRTC_FOLDER}
+        DEPENDS sync
+    )
+    list(APPEND WEBRTC_DOWNLOAD_DEPENDS update-vs)
+endif()
+
+
 webrtc_command(
     NAME download
     COMMAND ""
-    DEPENDS config sync download-gn download-ciopfs update-clang
+    DEPENDS ${WEBRTC_DOWNLOAD_DEPENDS}
 )
