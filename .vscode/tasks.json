@@ -4,7 +4,7 @@
         {
             "label": "configure",
             "type": "shell",
-            "command": "cmake -S. -Bbuild",
+            "command": "cmake -S. -Bbuild -DCMAKE_INSTALL_PREFIX=build",
             "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceFolder}/"
@@ -13,7 +13,7 @@
         {
             "label": "build:release",
             "type": "shell",
-            "command": "cmake --build ./build --config Release --target peer -- -j 16",
+            "command": "cmake --build ./build --config Release -- -j 16",
             "problemMatcher": ["$gcc"],
             "options": {
                 "cwd": "${workspaceFolder}/"
@@ -22,8 +22,26 @@
         {
             "label": "build:debug",
             "type": "shell",
-            "command": "cmake --build ./build --config Debug --target peer -- -j 16",
+            "command": "cmake --build ./build --config Debug -- -j 16",
             "problemMatcher": ["$gcc"],
+            "options": {
+                "cwd": "${workspaceFolder}/"
+            }
+        },
+        {
+            "label": "pack:release",
+            "type": "shell",
+            "command": "cmake --build ./build --config Release --target pack -- -j 16",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}/"
+            }
+        },
+        {
+            "label": "pack:debug",
+            "type": "shell",
+            "command": "cmake --build ./build --config Debug --target pack -- -j 16",
+            "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceFolder}/"
             }
