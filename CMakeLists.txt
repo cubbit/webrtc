@@ -36,7 +36,7 @@ else()
     list(APPEND WEBRTC_GEN_ARGS is_debug=false)
 endif()
 
-if (WIN32)
+if(WIN32)
     list(APPEND WEBRTC_GEN_ARGS is_clang=false)
 endif()
 
