@@ -22,7 +22,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "cmake --build ./build -- -j 16",
+            "command": "cmake --build ./build",
             "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceFolder}/"
@@ -31,7 +31,7 @@
         {
             "label": "pack",
             "type": "shell",
-            "command": "cmake --build ./build --target pack -- -j 16",
+            "command": "cmake --build ./build --target pack",
             "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceFolder}/"
