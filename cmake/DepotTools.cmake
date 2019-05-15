@@ -1,6 +1,6 @@
 
 if(NOT WIN32)
-find_package(PythonInterp 2.7 REQUIRED)
+    find_package(PythonInterp 2.7 REQUIRED)
 endif()
 
 ExternalProject_Add(depot-tools
