@@ -37,5 +37,14 @@
                 "cwd": "${workspaceFolder}/"
             }
         }
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "cmake --build ./build --target clean",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}/"
+            }
+        }
     ]
 }
