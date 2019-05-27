@@ -1,4 +1,4 @@
-set(WEBRTC_FETCH_COMMAND "gclient config --unmanaged --name src https://webrtc.googlesource.com/src")
+set(WEBRTC_FETCH_COMMAND gclient --config --unmanaged --name src https://webrtc.googlesource.com/src)
 webrtc_command(
     NAME config
     COMMAND ${WEBRTC_FETCH_COMMAND}
@@ -6,7 +6,7 @@ webrtc_command(
     DEPENDS depot-tools
 )
 
-set(WEBRTC_SYNC_COMMAND "gclient sync --revision ${WEBRTC_GIT_REVISION} --nohooks --reset --no-history --shallow")
+set(WEBRTC_SYNC_COMMAND gclient sync --revision ${WEBRTC_GIT_REVISION} --nohooks --reset --no-history --shallow)
 webrtc_command(
     NAME sync
     COMMAND ${WEBRTC_SYNC_COMMAND}
@@ -24,7 +24,7 @@ else()
     set(WEBRTC_PLATFORM linux)
     set(WEBRTC_GN_SHA_PATH src/buildtools/linux64/gn.sha1)
 endif()
-set(WEBRTC_DOWNLOAD_GN_COMMAND "download_from_google_storage --no_resume --platform=${WEBRTC_PLATFORM} --no_auth --bucket chromium-gn -s ${WEBRTC_GN_SHA_PATH}")
+set(WEBRTC_DOWNLOAD_GN_COMMAND download_from_google_storage --no_resume --platform=${WEBRTC_PLATFORM} --no_auth --bucket chromium-gn -s ${WEBRTC_GN_SHA_PATH})
 webrtc_command(
     NAME download-gn
     COMMAND ${WEBRTC_DOWNLOAD_GN_COMMAND}
@@ -32,7 +32,7 @@ webrtc_command(
     DEPENDS sync
 )
 
-set(WEBRTC_DOWNLOAD_CIOPFS_COMMAND "download_from_google_storage --no_resume --no_auth --bucket chromium-browser-clang/ciopfs -s src/build/ciopfs.sha1")
+set(WEBRTC_DOWNLOAD_CIOPFS_COMMAND download_from_google_storage --no_resume --no_auth --bucket chromium-browser-clang/ciopfs -s src/build/ciopfs.sha1)
 webrtc_command(
     NAME download-ciopfs
     COMMAND ${WEBRTC_DOWNLOAD_CIOPFS_COMMAND}
@@ -40,7 +40,7 @@ webrtc_command(
     DEPENDS download-gn
 )
 
-set(WEBRTC_UPDATE_CLANG_COMMAND "python src/tools/clang/scripts/update.py")
+set(WEBRTC_UPDATE_CLANG_COMMAND python src/tools/clang/scripts/update.py)
 webrtc_command(
     NAME update-clang
     COMMAND ${WEBRTC_UPDATE_CLANG_COMMAND}
@@ -51,7 +51,7 @@ webrtc_command(
 set(WEBRTC_DOWNLOAD_DEPENDS config sync download-gn download-ciopfs update-clang)
 
 if(WIN32)
-    set(WEBRTC_UPDATE_VS_COMMAND "python src/build/vs_toolchain.py update --force")
+    set(WEBRTC_UPDATE_VS_COMMAND python src/build/vs_toolchain.py update --force)
     webrtc_command(
         NAME update-vs
         COMMAND ${WEBRTC_UPDATE_VS_COMMAND}
