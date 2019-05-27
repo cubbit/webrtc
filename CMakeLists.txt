@@ -33,7 +33,7 @@ list(APPEND WEBRTC_GEN_ARGS
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(WEBRTC_BUILD_TYPE debug)
-    list(APPEND WEBRTC_GEN_ARGS is_debug=true)
+    list(APPEND WEBRTC_GEN_ARGS is_debug=true enable_iterator_debugging=true)
 else()
     set(WEBRTC_BUILD_TYPE release)
     list(APPEND WEBRTC_GEN_ARGS is_debug=false)
