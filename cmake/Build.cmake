@@ -8,6 +8,6 @@ webrtc_command(
 
 webrtc_command(
     NAME build
-    COMMAND ""
+    COMMAND echo build complete
     DEPENDS ninja
 )

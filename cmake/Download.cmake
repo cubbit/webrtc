@@ -64,6 +64,6 @@ endif()
 
 webrtc_command(
     NAME download
-    COMMAND ""
+    COMMAND echo download completed
     DEPENDS ${WEBRTC_DOWNLOAD_DEPENDS}
 )

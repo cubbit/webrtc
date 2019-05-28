@@ -30,7 +30,7 @@ webrtc_command(
 
 webrtc_command(
     NAME setup
-    COMMAND ""
+    COMMAND echo setup complete
     WORKING_DIRECTORY ${WEBRTC_FOLDER}
     DEPENDS lib-copy headers-copy
 )

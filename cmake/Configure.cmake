@@ -6,7 +6,7 @@ webrtc_command(
     DEPENDS download
 )
 
-set(WEBRTC_CONFIGURE_COMMAND gn gen out/${WEBRTC_BUILD_TYPE} --args=\"${WEBRTC_GEN_ARGS}\")
+set(WEBRTC_CONFIGURE_COMMAND gn gen out/${WEBRTC_BUILD_TYPE} --args=${WEBRTC_GEN_ARGS})
 webrtc_command(
     NAME gen
     COMMAND ${WEBRTC_CONFIGURE_COMMAND}
@@ -16,6 +16,6 @@ webrtc_command(
 
 webrtc_command(
     NAME configure
-    COMMAND ""
+    COMMAND echo configure complete
     DEPENDS gen last-change
 )
