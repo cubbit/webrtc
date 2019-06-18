@@ -16,6 +16,6 @@ webrtc_command(
 
 webrtc_command(
     NAME configure
-    COMMAND ""
+    COMMAND echo configure complete
     DEPENDS gen last-change
 )

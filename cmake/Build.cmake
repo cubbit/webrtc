@@ -1,5 +1,4 @@
 set(WEBRTC_BUILD_COMMAND ninja ${WEBRTC_TARGET} -C out/${WEBRTC_BUILD_TYPE})
-
 webrtc_command(
     NAME ninja
     COMMAND ${WEBRTC_BUILD_COMMAND}
@@ -9,6 +8,6 @@ webrtc_command(
 
 webrtc_command(
     NAME build
-    COMMAND ""
+    COMMAND echo build complete
     DEPENDS ninja
 )
