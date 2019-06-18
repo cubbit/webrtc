@@ -1,4 +1,4 @@
-set(WEBRTC_LAST_CHANGE_COMMAND "python src/build/util/lastchange.py -o src/build/util/LASTCHANGE")
+set(WEBRTC_LAST_CHANGE_COMMAND python src/build/util/lastchange.py -o src/build/util/LASTCHANGE)
 webrtc_command(
     NAME last-change
     COMMAND ${WEBRTC_LAST_CHANGE_COMMAND}
@@ -6,7 +6,7 @@ webrtc_command(
     DEPENDS download
 )
 
-set(WEBRTC_CONFIGURE_COMMAND "gn gen out/${WEBRTC_BUILD_TYPE} --args=\"${WEBRTC_GEN_ARGS}\"")
+set(WEBRTC_CONFIGURE_COMMAND gn gen out/${WEBRTC_BUILD_TYPE} --args=${WEBRTC_GEN_ARGS})
 webrtc_command(
     NAME gen
     COMMAND ${WEBRTC_CONFIGURE_COMMAND}
