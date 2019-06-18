@@ -1,4 +1,4 @@
-set(WEBRTC_FETCH_COMMAND gclient --config --unmanaged --name src https://webrtc.googlesource.com/src)
+set(WEBRTC_FETCH_COMMAND gclient config --unmanaged --name src https://webrtc.googlesource.com/src)
 webrtc_command(
     NAME config
     COMMAND ${WEBRTC_FETCH_COMMAND}

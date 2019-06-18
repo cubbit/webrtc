@@ -14,9 +14,9 @@ endif()
 if(WIN32)
     list(APPEND _ENV DEPOT_TOOLS_WIN_TOOLCHAIN=0)
 endif()
-list(APPEND _ENV PATH="${_WEBRTC_PATH}")
 
-set(PREFIX_EXECUTE ${CMAKE_COMMAND} -E env "${_ENV}")
+list(APPEND _ENV PATH="${_WEBRTC_PATH}")
+set(PREFIX_EXECUTE ${CMAKE_COMMAND} -E env ${_ENV})
 
 function(webrtc_command)
     set(ONE_VALUE_ARGS NAME COMMENT WORKING_DIRECTORY)
@@ -24,10 +24,14 @@ function(webrtc_command)
     cmake_parse_arguments(COMMAND "" "${ONE_VALUE_ARGS}" "${LIST_ARGS}" ${ARGN})
 
     set(STAMP_DIR ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY})
-    set(STAMP_FILE "${STAMP_DIR}/${COMMAND_NAME}-complete")
+    set(STAMP_FILE ${STAMP_DIR}/${COMMAND_NAME}-complete)
 
     if(WIN32)
-        set(COMMAND_COMMAND cmd /c "${COMMAND_COMMAND}")
+        set(COMMAND_COMMAND cmd /c ${COMMAND_COMMAND})
+    else()
+        if(NOT COMMAND_COMMAND)
+            set(COMMAND_COMMAND echo 1 &>/dev/null)
+        endif()
     endif()
 
     add_custom_command(
