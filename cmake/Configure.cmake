@@ -6,12 +6,21 @@ webrtc_command(
     DEPENDS download
 )
 
+set(WEBRTC_ARCH amd64)
+set(WEBRTC_SYSROOT_COMMAND python build/linux/sysroot_scripts/install-sysroot.py --arch=${WEBRTC_ARCH})
+webrtc_command(
+    NAME sysroot
+    COMMAND ${WEBRTC_SYSROOT_COMMAND}
+    WORKING_DIRECTORY ${WEBRTC_FOLDER}/src
+    DEPENDS download
+)
+
 set(WEBRTC_CONFIGURE_COMMAND gn gen out/${WEBRTC_BUILD_TYPE} --args=${WEBRTC_GEN_ARGS})
 webrtc_command(
     NAME gen
     COMMAND ${WEBRTC_CONFIGURE_COMMAND}
     WORKING_DIRECTORY ${WEBRTC_FOLDER}/src
-    DEPENDS download
+    DEPENDS sysroot
 )
 
 webrtc_command(
