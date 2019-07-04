@@ -14,7 +14,7 @@ configure: ## Configure the project
 configure-debug: ## Configure the project for debug
 	cmake -S. -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug
 
-build: ## Build the project
+build-webrtc: ## Build the project
 	cmake --build ./build
 
 pack: ## Pack the artifacts
