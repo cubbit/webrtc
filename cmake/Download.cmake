@@ -14,6 +14,16 @@ webrtc_command(
     DEPENDS config
 )
 
+if(DEFINED ENV{GYP_DEFINES})
+    message(WARNING GYP_DEFINES is already set to $ENV{GYP_DEFINES})
+else()
+    if(APPLE)
+        set(ENV{GYP_DEFINES} "target_arch=x64")
+    else()
+        set(ENV{GYP_DEFINES} "target_arch=ia32")
+    endif()
+endif()
+
 if(WIN32)
     set(WEBRTC_PLATFORM win32)
     set(WEBRTC_GN_SHA_PATH src/buildtools/win/gn.exe.sha1)
@@ -24,6 +34,7 @@ else()
     set(WEBRTC_PLATFORM linux)
     set(WEBRTC_GN_SHA_PATH src/buildtools/linux64/gn.sha1)
 endif()
+
 set(WEBRTC_DOWNLOAD_GN_COMMAND download_from_google_storage --no_resume --platform=${WEBRTC_PLATFORM} --no_auth --bucket chromium-gn -s ${WEBRTC_GN_SHA_PATH})
 webrtc_command(
     NAME download-gn
