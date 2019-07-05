@@ -1,22 +1,16 @@
 language: c
 
+git:
+  depth: 1
+
 os:
   - linux
   - osx
   # - windows
 
-matrix:
-  include:
-    - env: BUILD_TYPE=Debug
-    - env: BUILD_TYPE=Release
-
-before_install:
-  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
-  - mkdir -p ${DEPS_DIR} && cd ${DEPS_DIR}
-  - travis_retry wget https://github.com/Kitware/CMake/releases/download/v3.14.3/cmake-3.14.3-Linux-x86_64.sh
-  - mkdir -p cmake && sh cmake-3.14.3-Linux-x86_64.sh --skip-license --prefix=cmake
-  - PATH=${DEPS_DIR}/cmake:${DEPS_DIR}/cmake/bin:$PATH
-  - cd ${TRAVIS_BUILD_DIR}
+env:
+  - BUILD_TYPE=Debug
+  - BUILD_TYPE=Release
 
 install:
   - cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
