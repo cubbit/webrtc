@@ -5,18 +5,18 @@ git:
 
 matrix:
   include:
-    - os: linux
-      env: BUILD_TYPE=Debug
-    - os: linux
-      env: BUILD_TYPE=Debug NOLOG=1
-    - os: linux
-      env: BUILD_TYPE=Release
-    - os: osx
-      env: BUILD_TYPE=Debug
-    - os: osx
-      env: BUILD_TYPE=Debug NOLOG=1
-    - os: osx
-      env: BUILD_TYPE=Release
+      # - os: linux
+      #   env: BUILD_TYPE=Debug
+      # - os: linux
+      #   env: BUILD_TYPE=Debug NOLOG=1
+      # - os: linux
+      #   env: BUILD_TYPE=Release
+      # - os: osx
+      #   env: BUILD_TYPE=Debug
+      # - os: osx
+      #   env: BUILD_TYPE=Debug NOLOG=1
+      # - os: osx
+      #   env: BUILD_TYPE=Release
     - os: windows
       env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Debug
       before_install: choco install cmake windbg
@@ -34,7 +34,7 @@ script:
   - cmake --build ./build
 
 before_deploy:
-  - cmake --build ./build --target pack
+  - cmake --build ./build --target pack > /dev/null
 
 deploy:
   provider: releases

@@ -56,7 +56,7 @@ webrtc_command(
     NAME update-clang
     COMMAND ${WEBRTC_UPDATE_CLANG_COMMAND}
     WORKING_DIRECTORY ${WEBRTC_FOLDER}
-    DEPENDS sync
+    DEPENDS download-ciopfs
 )
 
 set(WEBRTC_DOWNLOAD_DEPENDS config sync download-gn download-ciopfs update-clang)
@@ -67,7 +67,7 @@ if(WIN32)
         NAME update-vs
         COMMAND ${WEBRTC_UPDATE_VS_COMMAND}
         WORKING_DIRECTORY ${WEBRTC_FOLDER}
-        DEPENDS sync
+        DEPENDS download-ciopfs
     )
     list(APPEND WEBRTC_DOWNLOAD_DEPENDS update-vs)
 endif()
