@@ -40,6 +40,6 @@ deploy:
   draft: true
   on:
     repo: cubbit/webrtc
-    tags: true
+    # tags: true
   file_glob: true
   file: build/webrtc-*.zip
