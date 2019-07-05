@@ -33,3 +33,4 @@ webrtc_command(
     NAME configure
     COMMAND echo configure complete
     DEPENDS gen
+)
