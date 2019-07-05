@@ -18,7 +18,7 @@ webrtc_command(
     NAME sysroot
     COMMAND ${WEBRTC_SYSROOT_COMMAND}
     WORKING_DIRECTORY ${WEBRTC_FOLDER}/src
-    DEPENDS download
+    DEPENDS last-change
 )
 
 set(WEBRTC_CONFIGURE_COMMAND gn gen out/${WEBRTC_BUILD_TYPE} --args=${WEBRTC_GEN_ARGS})
@@ -32,5 +32,4 @@ webrtc_command(
 webrtc_command(
     NAME configure
     COMMAND echo configure complete
-    DEPENDS gen last-change
-)
+    DEPENDS gen
