@@ -1,0 +1,36 @@
+language: c
+
+os:
+  - linux
+  - osx
+  # - windows
+
+matrix:
+  include:
+    - env: BUILD_TYPE=Debug
+    - env: BUILD_TYPE=Release
+
+before_install:
+  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
+  - mkdir -p ${DEPS_DIR} && cd ${DEPS_DIR}
+  - travis_retry wget https://github.com/Kitware/CMake/releases/download/v3.14.3/cmake-3.14.3-Linux-x86_64.sh
+  - mkdir -p cmake && sh cmake-3.14.3-Linux-x86_64.sh --skip-license --prefix=cmake
+  - PATH=${DEPS_DIR}/cmake:${DEPS_DIR}/cmake/bin:$PATH
+  - cd ${TRAVIS_BUILD_DIR}
+
+install:
+  - cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
+
+script:
+  - cmake --build ./build
+
+# deploy:
+#   - provider: releases
+#     skip_cleanup: true
+#     name: $TRAVIS_TAG
+#     api_key:
+#       secure: PmV3Nf31qfWdA9IsCdJ3jqr7ZhJ5tLaC4ksnwLSlmfTFC+P8wTVX3A74YO9LtXdGXwGkOmO24fUzWw2wyJh8Z/eJKS40PKknJyXEYs0GV31b4QQX8EYn2ZQhsczubdcyQSlpYLD4i3GotVhPalg1QzRCHf9YwGiYo4ihCzCh+p4HOzLdZoGXj38kDtCo4fMSNzpzV9RjAOqu59kAukHu/uXkwlQFGZD6ZZ7e8tNEvJf/rBIlDmXBADjVyKEh4omQoEIhvlFoCDjTKnNHUNnyylQ5FKQPdRewI5rjPN8dp5u1XfJQ70TlylK8ArIGTAgq4qEpMmciRU4UfcIVOWdvgFZbwdjYW9FmLefaNL7Z9pvAJy980DGW4iG/asAD0cMRC80I1x7ZjZXGG0iJQlcFko2YDiWDrRbjEg3eSrA9QFw0QUZJy7axe3DqUUMmy7lku3hm1m2q/phG7aLem2iJ4ApPms8otOEg3s1KHK6L8Uiniegq0czV0xQWqMWJPvISmZ2fSEFz+JxKecbOnVVxmkqkcVdaKiAOGorBezZWRVbDvhmtJaNALFSTjAJYq2KYdl0iAaqID3Nyh0WGxmEkKyhx1Kg5jqpGa1qPa99p+eJ07iN3d73JDtwYRPbj5EefCLHeHmT+eXQaiCIOnxZ5OEoAHrD1MDUvgDva6MfnmJc=
+#     on:
+#       tags: true
+#       repo: cubbit/webrtc
+#       condition: $DEPLOY = true
