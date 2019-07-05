@@ -13,7 +13,7 @@
         {
             "label": "configure:debug",
             "type": "shell",
-            "command": "cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug",
+            "command": "cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug -DNOLOG=0",
             "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceFolder}/"

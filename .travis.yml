@@ -43,11 +43,9 @@ deploy:
   api_key:
     secure: UR9Oh2gnd3yK3qIDyIN88ZZhMCYI2dgsjRhVL+SyDrtwsA35uZFdly/eW7hEUUOct5kAY9sV5Hz/NZGR/h3CTQOA/41hyTmPKf/Nkp+GNbCHphAxfq1wd2wZmFk2bonaVyVjWA3mHBrmUUs932W9yEGhCE5NpmZ8PmusJ3np0AtOTwZFo/CYL1YX+vvtUkklDmC9AwpWhQDQ9gBhomjaUujhBECZRnIEucLG/fNbHqjAcZiNA69Jt+wAAeaYs6F+KeOLg3sDyZ6p9vWr4UHYSLLEaXKBfq7f9LP5TyvwpDoVmGC3W89QXGTCpk+ajviBkNx2mFFv5CKFxf8Ig7jc0LXiNTjgPZsIHlItsvM1FpAg7Edf1U5FJ7kBEpTOMG2A0jKg7ZmAsdMM93iM7kG1ak9cUmnVD6pPF8Lbqceyz4OPhliSep2kvR+jAZ6nTGrrxSlNBOP5z58KtD4y2l80OBimg4JS70gutXgulv72GNPtmza2c69VyYgHeILAp8NVzOHeMnybXjS+q52/GfoCcNveGOn2ikPhhQZbLDMb5SrtKq8wL8e6+1LKxSVGSbfgK5vpqEe6nZOwO+btEPRAVBvhpzrYPZuOQCKOef5f16jl1tYemWh+sBcdq6qBFWPJaRN3W4O2Z9rIuTQQdPu1awuNmXvW4EZoKGAqfVhaKWY=
   name: $TRAVIS_TAG
-  draft: true
   on:
     repo: cubbit/webrtc
     tags: true
-    all_branches: true
   file_glob: true
   file: build/webrtc-*.zip
   skip_cleanup: true
