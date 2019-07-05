@@ -20,6 +20,15 @@
             }
         },
         {
+            "label": "configure:debug:nolog",
+            "type": "shell",
+            "command": "cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug -DNOLOG=1",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}/"
+            }
+        },
+        {
             "label": "build",
             "type": "shell",
             "command": "cmake --build ./build",

@@ -72,6 +72,16 @@ if(WIN32)
     list(APPEND WEBRTC_DOWNLOAD_DEPENDS update-vs)
 endif()
 
+if(NOLOG)
+    set(WEBRTC_NOLOG_COMMAND git apply --3way ${CMAKE_CURRENT_SOURCE_DIR}/patch/Disable-debug-build-log.patch)
+    webrtc_command(
+        NAME nolog
+        COMMAND ${WEBRTC_NOLOG_COMMAND}
+        WORKING_DIRECTORY ${WEBRTC_FOLDER}/src
+        DEPENDS sync
+    )
+    list(APPEND WEBRTC_DOWNLOAD_DEPENDS nolog)
+endif()
 
 webrtc_command(
     NAME download

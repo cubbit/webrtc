@@ -1,0 +1,27 @@
+From 7d19ae00fe1b3281706e9411d2d15c6c5e062a0f Mon Sep 17 00:00:00 2001
+From: Alessio Paccoia <alessio.paccoia@cubbit.io>
+Date: Fri, 5 Jul 2019 02:55:52 +0200
+Subject: [PATCH] Disable debug build log
+
+---
+ rtc_base/logging.cc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/rtc_base/logging.cc b/rtc_base/logging.cc
+index f78cd88f94..91d7521f2e 100644
+--- a/rtc_base/logging.cc
++++ b/rtc_base/logging.cc
+@@ -48,8 +48,8 @@ namespace rtc {
+ namespace {
+ // By default, release builds don't log, debug builds at info level
+ #if !defined(NDEBUG)
+-static LoggingSeverity g_min_sev = LS_INFO;
+-static LoggingSeverity g_dbg_sev = LS_INFO;
++static LoggingSeverity g_min_sev = LS_NONE;
++static LoggingSeverity g_dbg_sev = LS_NONE;
+ #else
+ static LoggingSeverity g_min_sev = LS_NONE;
+ static LoggingSeverity g_dbg_sev = LS_NONE;
+-- 
+2.22.0.windows.1
+
