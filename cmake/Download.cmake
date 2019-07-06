@@ -56,7 +56,7 @@ webrtc_command(
     NAME update-clang
     COMMAND ${WEBRTC_UPDATE_CLANG_COMMAND}
     WORKING_DIRECTORY ${WEBRTC_FOLDER}
-    DEPENDS sync
+    DEPENDS download-ciopfs
 )
 
 set(WEBRTC_DOWNLOAD_DEPENDS config sync download-gn download-ciopfs update-clang)
@@ -67,11 +67,21 @@ if(WIN32)
         NAME update-vs
         COMMAND ${WEBRTC_UPDATE_VS_COMMAND}
         WORKING_DIRECTORY ${WEBRTC_FOLDER}
-        DEPENDS sync
+        DEPENDS download-ciopfs
     )
     list(APPEND WEBRTC_DOWNLOAD_DEPENDS update-vs)
 endif()
 
+if(NOLOG)
+    set(WEBRTC_NOLOG_COMMAND git apply --3way ${CMAKE_CURRENT_SOURCE_DIR}/patch/Disable-debug-build-log.patch)
+    webrtc_command(
+        NAME nolog
+        COMMAND ${WEBRTC_NOLOG_COMMAND}
+        WORKING_DIRECTORY ${WEBRTC_FOLDER}/src
+        DEPENDS sync
+    )
+    list(APPEND WEBRTC_DOWNLOAD_DEPENDS nolog)
+endif()
 
 webrtc_command(
     NAME download

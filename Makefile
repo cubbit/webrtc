@@ -9,10 +9,10 @@ clean: ## Clean the project
 	cmake --build ./build --target clean
 
 configure: ## Configure the project
-	cmake -S. -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Release
+	cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Release
 
 configure-debug: ## Configure the project for debug
-	cmake -S. -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug
+	cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug
 
 build-webrtc: ## Build the project
 	cmake --build ./build

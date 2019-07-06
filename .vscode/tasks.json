@@ -4,7 +4,7 @@
         {
             "label": "configure:release",
             "type": "shell",
-            "command": "cmake -S. -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Release",
+            "command": "cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Release",
             "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceFolder}/"
@@ -13,7 +13,16 @@
         {
             "label": "configure:debug",
             "type": "shell",
-            "command": "cmake -S. -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug",
+            "command": "cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug -DNOLOG=0",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}/"
+            }
+        },
+        {
+            "label": "configure:debug:nolog",
+            "type": "shell",
+            "command": "cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug -DNOLOG=1",
             "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceFolder}/"
