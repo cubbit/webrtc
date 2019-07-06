@@ -1,0 +1,52 @@
+language: cpp
+
+git:
+  depth: 1
+
+matrix:
+  include:
+    - os: linux
+      env: BUILD_TYPE=Debug
+    - os: linux
+      env: BUILD_TYPE=Debug NOLOG=1
+    - os: linux
+      env: BUILD_TYPE=Release
+    - os: osx
+      env: BUILD_TYPE=Debug
+    - os: osx
+      env: BUILD_TYPE=Debug NOLOG=1
+    - os: osx
+      env: BUILD_TYPE=Release
+    - os: windows
+      env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Debug
+      before_install: choco install cmake windbg
+    - os: windows
+      env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Debug NOLOG=1
+      before_install: choco install cmake windbg
+    - os: windows
+      env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Release
+      before_install: choco install cmake windbg
+  allow_failures:
+    - os: windows
+
+install:
+  - cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DNOLOG=${NOLOG}
+
+script:
+  - cmake --build ./build
+
+before_deploy:
+  - cmake --build ./build --target pack > /dev/null
+
+deploy:
+  provider: releases
+  api_key:
+    secure: UR9Oh2gnd3yK3qIDyIN88ZZhMCYI2dgsjRhVL+SyDrtwsA35uZFdly/eW7hEUUOct5kAY9sV5Hz/NZGR/h3CTQOA/41hyTmPKf/Nkp+GNbCHphAxfq1wd2wZmFk2bonaVyVjWA3mHBrmUUs932W9yEGhCE5NpmZ8PmusJ3np0AtOTwZFo/CYL1YX+vvtUkklDmC9AwpWhQDQ9gBhomjaUujhBECZRnIEucLG/fNbHqjAcZiNA69Jt+wAAeaYs6F+KeOLg3sDyZ6p9vWr4UHYSLLEaXKBfq7f9LP5TyvwpDoVmGC3W89QXGTCpk+ajviBkNx2mFFv5CKFxf8Ig7jc0LXiNTjgPZsIHlItsvM1FpAg7Edf1U5FJ7kBEpTOMG2A0jKg7ZmAsdMM93iM7kG1ak9cUmnVD6pPF8Lbqceyz4OPhliSep2kvR+jAZ6nTGrrxSlNBOP5z58KtD4y2l80OBimg4JS70gutXgulv72GNPtmza2c69VyYgHeILAp8NVzOHeMnybXjS+q52/GfoCcNveGOn2ikPhhQZbLDMb5SrtKq8wL8e6+1LKxSVGSbfgK5vpqEe6nZOwO+btEPRAVBvhpzrYPZuOQCKOef5f16jl1tYemWh+sBcdq6qBFWPJaRN3W4O2Z9rIuTQQdPu1awuNmXvW4EZoKGAqfVhaKWY=
+  name: $TRAVIS_TAG
+  on:
+    repo: cubbit/webrtc
+    tags: true
+  file_glob: true
+  file: build/webrtc-*.zip
+  skip_cleanup: true
+  overwrite: true
