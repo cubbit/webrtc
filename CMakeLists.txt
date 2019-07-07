@@ -37,16 +37,16 @@ endif()
 
 if(ARCH STREQUAL "arm")
     list(APPEND WEBRTC_GEN_ARGS
-        target_os="linux"
-        target_cpu="arm"
+        target_os=\"linux\"
+        target_cpu=\"arm\"
         rtc_build_tools=true
         treat_warnings_as_errors=false
         fatal_linker_warnings=false
     )
 elseif(ARCH STREQUAL "arm64")
     list(APPEND WEBRTC_GEN_ARGS
-        target_os="linux"
-        target_cpu="arm64"
+        target_os=\"linux\"
+        target_cpu=\"arm64\"
         rtc_build_tools=true
         treat_warnings_as_errors=false
         fatal_linker_warnings=false
