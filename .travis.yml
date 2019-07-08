@@ -11,6 +11,18 @@ matrix:
       env: BUILD_TYPE=Debug NOLOG=1
     - os: linux
       env: BUILD_TYPE=Release
+    - os: linux
+      env: BUILD_TYPE=Debug ARCH=arm
+    - os: linux
+      env: BUILD_TYPE=Debug NOLOG=1 ARCH=arm
+    - os: linux
+      env: BUILD_TYPE=Release ARCH=arm
+    - os: linux
+      env: BUILD_TYPE=Debug ARCH=arm64
+    - os: linux
+      env: BUILD_TYPE=Debug NOLOG=1 ARCH=arm64
+    - os: linux
+      env: BUILD_TYPE=Release ARCH=arm64
     - os: osx
       env: BUILD_TYPE=Debug
     - os: osx
@@ -30,7 +42,7 @@ matrix:
     - os: windows
 
 install:
-  - cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DNOLOG=${NOLOG}
+  - cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DNOLOG=${NOLOG} -DARCH=${ARCH}
 
 script:
   - cmake --build ./build

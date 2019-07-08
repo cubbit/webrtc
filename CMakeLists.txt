@@ -28,8 +28,32 @@ list(APPEND WEBRTC_GEN_ARGS
     rtc_use_gtk=false
     rtc_include_pulse_audio=false
     rtc_include_tests=false
-    rtc_build_tools=false
 )
+
+set(WEBRTC_ARCH amd64)
+if(ARCH)
+    set(WEBRTC_ARCH ${ARCH})
+endif()
+
+if(ARCH STREQUAL "arm")
+    list(APPEND WEBRTC_GEN_ARGS
+        target_os=\\"linux\\"
+        target_cpu=\\"arm\\"
+        rtc_build_tools=true
+        treat_warnings_as_errors=false
+        fatal_linker_warnings=false
+    )
+elseif(ARCH STREQUAL "arm64")
+    list(APPEND WEBRTC_GEN_ARGS
+        target_os=\\"linux\\"
+        target_cpu=\\"arm64\\"
+        rtc_build_tools=true
+        treat_warnings_as_errors=false
+        fatal_linker_warnings=false
+    )
+else()
+    list(APPEND WEBRTC_GEN_ARGS rtc_build_tools=false)
+endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(WEBRTC_BUILD_TYPE debug)
