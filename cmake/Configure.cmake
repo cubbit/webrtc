@@ -6,8 +6,6 @@ webrtc_command(
     DEPENDS download
 )
 
-set(WEBRTC_ARCH amd64)
-
 if(APPLE)
     set(CMAKE_OSX_DEPLOYMENT_TARGET 10.14)
     set(CMAKE_OSX_SYSROOT macosx10.14)
