@@ -30,6 +30,10 @@ list(APPEND WEBRTC_GEN_ARGS
     rtc_include_tests=false
 )
 
+if(NOAUDIO)
+    list(APPEND WEBRTC_GEN_ARGS rtc_use_dummy_audio_file_devices=true)
+endif()
+
 set(WEBRTC_ARCH amd64)
 if(ARCH)
     set(WEBRTC_ARCH ${ARCH})
@@ -57,7 +61,7 @@ endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(WEBRTC_BUILD_TYPE debug)
-    list(APPEND WEBRTC_GEN_ARGS is_debug=true enable_iterator_debugging=true)
+    list(APPEND WEBRTC_GEN_ARGS is_debug=true enable_iterator_debugging=true use_debug_fission=false)
 else()
     set(WEBRTC_BUILD_TYPE release)
     list(APPEND WEBRTC_GEN_ARGS is_debug=false)
