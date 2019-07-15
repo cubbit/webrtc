@@ -3,11 +3,6 @@ language: cpp
 git:
   depth: 1
 
-# branches:
-#   only:
-#     - noaudio
-# if: tag IS present
-
 matrix:
   include:
     - os: linux
@@ -84,7 +79,7 @@ matrix:
     - os: windows
 
 install:
-  - cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DNOAUDIO={NOAUDIO} -DNOLOG=${NOLOG} -DARCH=${ARCH}
+  - cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DNOAUDIO=${NOAUDIO} -DNOLOG=${NOLOG} -DARCH=${ARCH}
 
 script:
   - cmake --build ./build
