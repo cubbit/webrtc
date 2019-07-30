@@ -49,7 +49,7 @@ install(EXPORT ${PROJECT_NAME}-boringssl-config DESTINATION cmake)
 
 
 if(UNIX)
-    add_library(${PROJECT_NAME}-boringssl INTERFACE)
+    add_library(${PROJECT_NAME}-libcxx INTERFACE)
     target_include_directories(${PROJECT_NAME}-libcxx INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/webrtc/buildtools/third_party/libc++/trunk/include>)
     target_include_directories(${PROJECT_NAME}-libcxx INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/webrtc/buildtools/third_party/libc++abi/trunk/include>)
     target_link_libraries(${PROJECT_NAME}-libcxx INTERFACE lib/libcxx.a)

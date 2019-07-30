@@ -41,7 +41,7 @@ matrix:
       env: BUILD_TYPE=Debug NOAUDIO=1 ARCH=arm64
     - os: linux
       env: BUILD_TYPE=Debug NOAUDIO=1 NOLOG=1 ARCH=arm64
-    - os: linuxs
+    - os: linux
       env: BUILD_TYPE=Release NOAUDIO=1 ARCH=arm64
 
     - os: osx
