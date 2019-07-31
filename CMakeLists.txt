@@ -6,7 +6,7 @@ find_package(Git REQUIRED)
 
 include(ExternalProject)
 
-option(ARCH "Target architecture" ON)
+option(ARCH "Target architecture" "")
 option(NOLOG "Disable debug log" ON)
 option(CUBBIT "Build cubbit version" ON)
 
