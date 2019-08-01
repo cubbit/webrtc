@@ -82,8 +82,7 @@ install:
   - cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCUBBIT=${CUBBIT} -DNOLOG=${NOLOG} -DARCH=${ARCH}
 
 script:
-  - cmake --build ./build/webrtc
-  - cmake --build ./build/libwebrtc --target libwertc > /dev/null
+  - travis_wait 60 cmake --build ./build > log || cat log
 
 before_deploy:
   - cmake --build ./build --target pack
