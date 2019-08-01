@@ -82,7 +82,7 @@ install:
   - cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCUBBIT=${CUBBIT} -DNOLOG=${NOLOG} -DARCH=${ARCH}
 
 script:
-  - travis_wait 60 cmake --build ./build
+  - travis_wait 60 ./travis_build.sh
 
 before_deploy:
   - cmake --build ./build --target pack
