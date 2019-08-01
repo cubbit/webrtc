@@ -29,22 +29,39 @@ add_library(webrtc STATIC ${OBJ_FILES})
 set_source_files_properties(${OBJ_FILES} PROPERTIES EXTERNAL_OBJECT true GENERATED true)
 set_target_properties(webrtc PROPERTIES LINKER_LANGUAGE C LIBRARY_OUTPUT_DIRECTORY ${WEBRTC_OUTPUT_DIR})
 
-# #
-# # Install headers
-# install(DIRECTORY ${WEBRTC_SOURCE_DIR} DESTINATION "include" FILES_MATCHING PATTERN "*.h")
+if(WIN32)
+    target_compile_definitions(webrtc PUBLIC WEBRTC_WIN=1)
+    target_link_libraries(webrtc PUBLIC Winmm.lib Secur32.lib Msdmo.lib Wmcodecdspuuid.lib Dmoguids.lib)
+elseif(APPLE)
+    target_compile_definitions(webrtc PUBLIC WEBRTC_MAC=1 WEBRTC_POSIX=1)
 
-# #
-# # Install library
-# install(TARGETS webrtc
-#         EXPORT LibWebRTCTargets
-#         ARCHIVE DESTINATION lib
-#         RUNTIME DESTINATION bin
-#         LIBRARY DESTINATION lib
-#         INCLUDES DESTINATION include)
+    find_library(FOUNDATION_LIBRARY Foundation)
+    find_library(COREFOUNDATION_LIBRARY CoreFoundation)
+    target_link_libraries(webrtc PUBLIC ${COREFOUNDATION_LIBRARY} ${FOUNDATION_LIBRARY})
+    if(NOT CUBBIT)
+        find_library(AUDIOTOOLBOX_LIBRARY AudioToolbox)
+        find_library(COREAUDIO_LIBRARY CoreAudio)
+        find_library(COREGRAPHICS_LIBRARY CoreGraphics)
+        target_link_libraries(webrtc PUBLIC ${AUDIOTOOLBOX_LIBRARY} ${COREAUDIO_LIBRARY} ${COREGRAPHICS_LIBRARY})
+    endif()
+else()
+    target_compile_definitions(webrtc PUBLIC WEBRTC_LINUX=1 WEBRTC_POSIX=1)
+    if(NOT CUBBIT)
+        target_link_libraries(webrtc PUBLIC dl)
+    endif()
+endif()
 
-# install(EXPORT LibWebRTCTargets
-#         FILE LibWebRTCTargets.cmake
-#         DESTINATION ${INSTALL_CMAKE_DIR})
+install(DIRECTORY ${WEBRTC_SRC_ROOT}/ DESTINATION "include/webrtc" FILES_MATCHING PATTERN "*.h")
+install(TARGETS webrtc
+    EXPORT webrtc-config
+    LIBRARY DESTINATION lib
+    INCLUDES DESTINATION include include/webrtc include/webrtc/third_party/abseil-cpp include/webrtc/third_party/libyuv/include
+)
+install(EXPORT webrtc-config FILE webrtc-config.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake)
 
-# install(FILES ${CMAKE_MODULE_PATH}/Templates/UseLibWebRTC.cmake
-#         DESTINATION ${INSTALL_CMAKE_DIR})
+# Boringssl
+add_library(webrtc-boringssl INTERFACE)
+target_include_directories(webrtc-boringssl INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/webrtc/third_party/boringssl/src/include>)
+target_link_libraries(webrtc-boringssl INTERFACE ${WEBRTC_LIBRARIES})
+install(TARGETS webrtc-boringssl EXPORT webrtc-boringssl-config)
+install(EXPORT webrtc-boringssl-config DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake)

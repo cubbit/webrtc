@@ -82,10 +82,11 @@ install:
   - cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCUBBIT=${CUBBIT} -DNOLOG=${NOLOG} -DARCH=${ARCH}
 
 script:
-  - cmake --build ./build
+  - cmake --build ./build --target webrtc
+  - cmake --build ./build --target libwertc > /dev/null
 
 before_deploy:
-  - cmake --build ./build --target pack > /dev/null
+  - cmake --build ./build --target pack
 
 deploy:
   provider: releases
