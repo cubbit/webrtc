@@ -56,6 +56,8 @@ install(TARGETS webrtc
     EXPORT webrtc-config
     LIBRARY DESTINATION lib
     INCLUDES DESTINATION include include/webrtc include/webrtc/third_party/abseil-cpp include/webrtc/third_party/libyuv/include
+    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION bin
 )
 install(EXPORT webrtc-config FILE webrtc-config.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake)
 
