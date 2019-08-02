@@ -5,76 +5,76 @@ git:
 
 matrix:
   include:
+    # # - os: linux
+    # #   env: BUILD_TYPE=Debug
+    # # - os: linux
+    # #   env: BUILD_TYPE=Debug NOLOG=1
+    # # - os: linux
+    # #   env: BUILD_TYPE=Release
     # - os: linux
-    #   env: BUILD_TYPE=Debug
+    #   env: BUILD_TYPE=Debug CUBBIT=1
     # - os: linux
-    #   env: BUILD_TYPE=Debug NOLOG=1
+    #   env: BUILD_TYPE=Debug CUBBIT=1 NOLOG=1
     # - os: linux
-    #   env: BUILD_TYPE=Release
-    - os: linux
-      env: BUILD_TYPE=Debug CUBBIT=1
-    - os: linux
-      env: BUILD_TYPE=Debug CUBBIT=1 NOLOG=1
-    - os: linux
-      env: BUILD_TYPE=Release CUBBIT=1
+    #   env: BUILD_TYPE=Release CUBBIT=1
 
+    # # - os: linux
+    # #   env: BUILD_TYPE=Debug ARCH=arm
+    # # - os: linux
+    # #   env: BUILD_TYPE=Debug NOLOG=1 ARCH=arm
+    # # - os: linux
+    # #   env: BUILD_TYPE=Release ARCH=arm
     # - os: linux
-    #   env: BUILD_TYPE=Debug ARCH=arm
+    #   env: BUILD_TYPE=Debug CUBBIT=1 ARCH=arm
     # - os: linux
-    #   env: BUILD_TYPE=Debug NOLOG=1 ARCH=arm
+    #   env: BUILD_TYPE=Debug CUBBIT=1 NOLOG=1 ARCH=arm
     # - os: linux
-    #   env: BUILD_TYPE=Release ARCH=arm
-    - os: linux
-      env: BUILD_TYPE=Debug CUBBIT=1 ARCH=arm
-    - os: linux
-      env: BUILD_TYPE=Debug CUBBIT=1 NOLOG=1 ARCH=arm
-    - os: linux
-      env: BUILD_TYPE=Release CUBBIT=1 ARCH=arm
+    #   env: BUILD_TYPE=Release CUBBIT=1 ARCH=arm
 
+    # # - os: linux
+    # #   env: BUILD_TYPE=Debug ARCH=arm64
+    # # - os: linux
+    # #   env: BUILD_TYPE=Debug NOLOG=1 ARCH=arm64
+    # # - os: linux
+    # #   env: BUILD_TYPE=Release ARCH=arm64
     # - os: linux
-    #   env: BUILD_TYPE=Debug ARCH=arm64
+    #   env: BUILD_TYPE=Debug CUBBIT=1 ARCH=arm64
     # - os: linux
-    #   env: BUILD_TYPE=Debug NOLOG=1 ARCH=arm64
+    #   env: BUILD_TYPE=Debug CUBBIT=1 NOLOG=1 ARCH=arm64
     # - os: linux
-    #   env: BUILD_TYPE=Release ARCH=arm64
-    - os: linux
-      env: BUILD_TYPE=Debug CUBBIT=1 ARCH=arm64
-    - os: linux
-      env: BUILD_TYPE=Debug CUBBIT=1 NOLOG=1 ARCH=arm64
-    - os: linux
-      env: BUILD_TYPE=Release CUBBIT=1 ARCH=arm64
+    #   env: BUILD_TYPE=Release CUBBIT=1 ARCH=arm64
 
+    # # - os: osx
+    # #   env: BUILD_TYPE=Debug
+    # # - os: osx
+    # #   env: BUILD_TYPE=Debug NOLOG=1
+    # # - os: osx
+    # #   env: BUILD_TYPE=Release
     # - os: osx
-    #   env: BUILD_TYPE=Debug
+    #   env: BUILD_TYPE=Debug CUBBIT=1
     # - os: osx
-    #   env: BUILD_TYPE=Debug NOLOG=1
+    #   env: BUILD_TYPE=Debug CUBBIT=1 NOLOG=1
     # - os: osx
-    #   env: BUILD_TYPE=Release
-    - os: osx
-      env: BUILD_TYPE=Debug CUBBIT=1
-    - os: osx
-      env: BUILD_TYPE=Debug CUBBIT=1 NOLOG=1
-    - os: osx
-      env: BUILD_TYPE=Release CUBBIT=1
+    #   env: BUILD_TYPE=Release CUBBIT=1
 
+    # # - os: windows
+    # #   env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Debug
+    # #   before_install: choco install cmake windbg
+    # # - os: windows
+    # #   env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Debug NOLOG=1
+    # #   before_install: choco install cmake windbg
+    # # - os: windows
+    # #   env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Release
+    # #   before_install: choco install cmake windbg
     # - os: windows
-    #   env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Debug
+    #   env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Debug CUBBIT=1
     #   before_install: choco install cmake windbg
     # - os: windows
-    #   env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Debug NOLOG=1
+    #   env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Debug CUBBIT=1 NOLOG=1
     #   before_install: choco install cmake windbg
-    # - os: windows
-    #   env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Release
-    #   before_install: choco install cmake windbg
-    - os: windows
-      env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Debug CUBBIT=1
-      before_install: choco install cmake windbg && choco uninstall python2
-    - os: windows
-      env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Debug CUBBIT=1 NOLOG=1
-      before_install: choco install cmake windbg && choco uninstall python2
     - os: windows
       env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Release CUBBIT=1
-      before_install: choco install cmake windbg && choco uninstall python2
+      before_install: choco install cmake windbg && choco list --local-only && which python
   allow_failures:
     - os: windows
 
