@@ -51,19 +51,7 @@ else()
     endif()
 endif()
 
-install(DIRECTORY ${WEBRTC_SRC_ROOT}/ DESTINATION "include/webrtc" FILES_MATCHING PATTERN "*.h")
-install(TARGETS webrtc
-    EXPORT webrtc-config
-    LIBRARY DESTINATION lib
-    INCLUDES DESTINATION include include/webrtc include/webrtc/third_party/abseil-cpp include/webrtc/third_party/libyuv/include
-    ARCHIVE DESTINATION lib
-    RUNTIME DESTINATION bin
-)
-install(EXPORT webrtc-config FILE webrtc-config.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake)
-
-# Boringssl
-add_library(webrtc-boringssl INTERFACE)
-target_include_directories(webrtc-boringssl INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/webrtc/third_party/boringssl/src/include>)
-target_link_libraries(webrtc-boringssl INTERFACE ${WEBRTC_LIBRARIES})
-install(TARGETS webrtc-boringssl EXPORT webrtc-boringssl-config)
-install(EXPORT webrtc-boringssl-config DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake)
+install(DIRECTORY ${WEBRTC_SRC_ROOT}/ DESTINATION include/webrtc FILES_MATCHING PATTERN "*.h")
+install(TARGETS webrtc EXPORT webrtc-config DESTINATION lib)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/template/CMakeLists.txt.in DESTINATION ${CMAKE_INSTALL_PREFIX} RENAME CMakeLists.txt)
+install(EXPORT webrtc-config DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake)
