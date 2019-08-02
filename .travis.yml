@@ -68,13 +68,13 @@ matrix:
     #   before_install: choco install cmake windbg
     - os: windows
       env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Debug CUBBIT=1
-      before_install: choco install cmake windbg && choco remove python2
+      before_install: choco install cmake windbg && choco uninstall python2
     - os: windows
       env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Debug CUBBIT=1 NOLOG=1
-      before_install: choco install cmake windbg && choco remove python2
+      before_install: choco install cmake windbg && choco uninstall python2
     - os: windows
       env: vs2017_install="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" BUILD_TYPE=Release CUBBIT=1
-      before_install: choco install cmake windbg && choco remove python2
+      before_install: choco install cmake windbg && choco uninstall python2
   allow_failures:
     - os: windows
 
