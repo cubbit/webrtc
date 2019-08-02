@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cmake --build ./build > log || cat log
+cmake --build ./build > log || cat log && exit 1
