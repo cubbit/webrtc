@@ -1,0 +1,48 @@
+cmake_minimum_required(VERSION 3.8)
+
+project(webrtc NONE)
+
+include(GNUInstallDirs)
+
+add_library(webrtc INTERFACE)
+
+file(GLOB WEBRTC_LIBRARIES "lib/*webrtc*")
+target_link_libraries(webrtc INTERFACE ${WEBRTC_LIBRARIES})
+
+target_include_directories(webrtc SYSTEM INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+target_include_directories(webrtc SYSTEM INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/webrtc>)
+target_include_directories(webrtc SYSTEM INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/webrtc/third_party/abseil-cpp>)
+target_include_directories(webrtc SYSTEM INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/webrtc/third_party/libyuv/include>)
+
+if(WIN32)
+    target_compile_definitions(webrtc INTERFACE WEBRTC_WIN=1)
+    target_link_libraries(webrtc INTERFACE Winmm.lib Secur32.lib Msdmo.lib Wmcodecdspuuid.lib Dmoguids.lib)
+elseif(APPLE)
+    target_compile_definitions(webrtc INTERFACE WEBRTC_MAC=1 WEBRTC_POSIX=1)
+
+    find_library(FOUNDATION_LIBRARY Foundation)
+    find_library(COREFOUNDATION_LIBRARY CoreFoundation)
+    target_link_libraries(webrtc INTERFACE ${COREFOUNDATION_LIBRARY} ${FOUNDATION_LIBRARY})
+    if(NOT CUBBIT)
+        find_library(AUDIOTOOLBOX_LIBRARY AudioToolbox)
+        find_library(COREAUDIO_LIBRARY CoreAudio)
+        find_library(COREGRAPHICS_LIBRARY CoreGraphics)
+        target_link_libraries(webrtc INTERFACE ${AUDIOTOOLBOX_LIBRARY} ${COREAUDIO_LIBRARY} ${COREGRAPHICS_LIBRARY})
+    endif()
+else()
+    target_compile_definitions(webrtc INTERFACE WEBRTC_LINUX=1 WEBRTC_POSIX=1)
+    if(NOT CUBBIT)
+        target_link_libraries(webrtc INTERFACE dl)
+    endif()
+endif()
+
+install(DIRECTORY include/webrtc DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(TARGETS webrtc EXPORT webrtc-config INCLUDES DESTINATION)
+install(EXPORT webrtc-config DESTINATION cmake)
+
+# Boringssl
+add_library(webrtc-boringssl INTERFACE)
+target_include_directories(webrtc-boringssl SYSTEM INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/webrtc/third_party/boringssl/src/include>)
+target_link_libraries(webrtc-boringssl INTERFACE ${WEBRTC_LIBRARIES})
+install(TARGETS webrtc-boringssl EXPORT webrtc-boringssl-config INCLUDES DESTINATION)
+install(EXPORT webrtc-boringssl-config DESTINATION cmake)

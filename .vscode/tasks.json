@@ -4,7 +4,16 @@
         {
             "label": "configure:release",
             "type": "shell",
-            "command": "cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Release",
+            "command": "cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Release -DCUBBIT=0",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}/"
+            }
+        },
+        {
+            "label": "configure:release:cubbit",
+            "type": "shell",
+            "command": "cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Release -DCUBBIT=1",
             "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceFolder}/"
@@ -13,7 +22,7 @@
         {
             "label": "configure:debug",
             "type": "shell",
-            "command": "cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug -DNOLOG=0",
+            "command": "cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug -DCUBBIT=0 -DNOLOG=0",
             "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceFolder}/"
@@ -22,7 +31,25 @@
         {
             "label": "configure:debug:nolog",
             "type": "shell",
-            "command": "cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug -DNOLOG=1",
+            "command": "cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug -DCUBBIT=0 -DNOLOG=1",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}/"
+            }
+        },
+        {
+            "label": "configure:debug:cubbit",
+            "type": "shell",
+            "command": "cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug -DCUBBIT=1 -DNOLOG=0",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}/"
+            }
+        },
+        {
+            "label": "configure:debug:cubbit:nolog",
+            "type": "shell",
+            "command": "cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=build -DCMAKE_BUILD_TYPE=Debug -DCUBBIT=1 -DNOLOG=1",
             "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceFolder}/"

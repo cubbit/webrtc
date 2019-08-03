@@ -2,80 +2,82 @@ cmake_minimum_required(VERSION 3.8)
 
 project(webrtc NONE)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-
-include(ExternalProject)
 find_package(Git REQUIRED)
 
-include(DepotTools)
+include(ExternalProject)
 
-set(WEBRTC_REVISION m74)
-set(WEBRTC_GIT_REVISION branch-heads/${WEBRTC_REVISION})
-
-set(WEBRTC_FOLDER ${CMAKE_CURRENT_BINARY_DIR}/webrtc)
-file(MAKE_DIRECTORY ${WEBRTC_FOLDER})
-
-set(WEBRTC_LIB_FOLDER ${CMAKE_INSTALL_PREFIX}/lib)
-file(MAKE_DIRECTORY ${WEBRTC_LIB_FOLDER})
-
-set(WEBRTC_HEADERS_FOLDER ${CMAKE_INSTALL_PREFIX}/include/webrtc)
-file(MAKE_DIRECTORY ${WEBRTC_HEADERS_FOLDER})
-
-list(APPEND WEBRTC_GEN_ARGS
-    rtc_build_examples=false
-    rtc_use_x11=false
-    rtc_enable_protobuf=false
-    rtc_use_gtk=false
-    rtc_include_pulse_audio=false
-    rtc_include_tests=false
-)
-
-set(WEBRTC_ARCH amd64)
-if(ARCH)
-    set(WEBRTC_ARCH ${ARCH})
-endif()
-
-if(ARCH STREQUAL "arm")
-    list(APPEND WEBRTC_GEN_ARGS
-        target_os=\\"linux\\"
-        target_cpu=\\"arm\\"
-        rtc_build_tools=true
-        treat_warnings_as_errors=false
-        fatal_linker_warnings=false
-    )
-elseif(ARCH STREQUAL "arm64")
-    list(APPEND WEBRTC_GEN_ARGS
-        target_os=\\"linux\\"
-        target_cpu=\\"arm64\\"
-        rtc_build_tools=true
-        treat_warnings_as_errors=false
-        fatal_linker_warnings=false
-    )
-else()
-    list(APPEND WEBRTC_GEN_ARGS rtc_build_tools=false)
-endif()
+option(ARCH "Target architecture" "")
+option(NOLOG "Disable debug log" ON)
+option(CUBBIT "Build cubbit version" ON)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(WEBRTC_BUILD_TYPE debug)
-    list(APPEND WEBRTC_GEN_ARGS is_debug=true enable_iterator_debugging=true)
 else()
     set(WEBRTC_BUILD_TYPE release)
-    list(APPEND WEBRTC_GEN_ARGS is_debug=false)
 endif()
+
+ExternalProject_Add(webrtc
+    PREFIX ${CMAKE_BINARY_DIR}/webrtc
+    SOURCE_DIR ${CMAKE_SOURCE_DIR}/webrtc
+
+    CMAKE_ARGS
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DWEBRTC_BUILD_TYPE=${WEBRTC_BUILD_TYPE}
+        -DBINARY_ROOT=${CMAKE_BINARY_DIR}
+        -DARCH=${ARCH}
+        -DNOLOG=${NOLOG}
+        -DCUBBIT=${CUBBIT}
+
+    INSTALL_COMMAND ""
+)
+
+ExternalProject_Get_Property(webrtc BINARY_DIR)
+set(WEBRTC_SRC_ROOT ${BINARY_DIR}/webrtc/src)
+
+ExternalProject_Add(libwebrtc
+    PREFIX ${CMAKE_BINARY_DIR}/libwebrtc
+    SOURCE_DIR ${CMAKE_SOURCE_DIR}/libwebrtc
+
+    DEPENDS webrtc
+
+    CMAKE_ARGS
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DWEBRTC_BUILD_TYPE=${WEBRTC_BUILD_TYPE}
+        -DWEBRTC_SRC_ROOT=${WEBRTC_SRC_ROOT}
+)
+
+# Pack
+set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY ON)
 
 if(WIN32)
-    list(APPEND WEBRTC_GEN_ARGS is_clang=false)
+    set(WEBRTC_PACK_PLATFORM win)
+elseif(APPLE)
+    set(WEBRTC_PACK_PLATFORM darwin)
+else()
+    set(WEBRTC_PACK_PLATFORM linux)
 endif()
 
-string(REPLACE ";" " " WEBRTC_GEN_ARGS "${WEBRTC_GEN_ARGS}")
+string(TOLOWER ${CMAKE_HOST_SYSTEM_PROCESSOR} WEBRTC_PACK_ARCHITECTURE)
+if(ARCH)
+    set(WEBRTC_PACK_ARCHITECTURE ${ARCH})
+endif()
 
-set(WEBTC_TARGET webrtc libjingle_peerconnection)
+set(WEBRTC_PACK_NAME webrtc-${WEBRTC_PACK_PLATFORM}-${WEBRTC_PACK_ARCHITECTURE}-${WEBRTC_BUILD_TYPE})
+if(CUBBIT)
+    set(WEBRTC_PACK_NAME ${WEBRTC_PACK_NAME}-cubbit)
+endif()
+if(WEBRTC_BUILD_TYPE STREQUAL debug AND NOLOG)
+    set(WEBRTC_PACK_NAME ${WEBRTC_PACK_NAME}-nolog)
+endif()
+set(WEBRTC_PACK_NAME ${WEBRTC_PACK_NAME}.zip)
+set(WEBRTC_PACK ${CMAKE_INSTALL_PREFIX}/${WEBRTC_PACK_NAME})
 
-include(WebrtcCommand)
+set(WEBRTC_CONFIG ${CMAKE_INSTALL_PREFIX}/CMakeLists.txt)
 
-include(Download)
-include(Configure)
-include(Build)
-include(Setup)
-
-include(Pack)
+add_custom_command(
+    OUTPUT ${WEBRTC_PACK}
+    COMMAND ${CMAKE_COMMAND} -E tar cf ${WEBRTC_PACK} --format=zip ${CMAKE_INSTALL_PREFIX}/lib ${CMAKE_INSTALL_PREFIX}/include ${CMAKE_INSTALL_PREFIX}/CMakeLists.txt
+    WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX}
+    DEPENDS libwebrtc
+)
+add_custom_target(pack DEPENDS ${WEBRTC_PACK})
