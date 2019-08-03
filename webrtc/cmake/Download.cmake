@@ -73,7 +73,7 @@ if(WIN32)
 endif()
 
 if(NOLOG)
-    set(WEBRTC_NOLOG_COMMAND git apply --3way ${CMAKE_CURRENT_SOURCE_DIR}/patch/Disable-debug-build-log.patch)
+    set(WEBRTC_NOLOG_COMMAND git apply --3way --ignore-space-change --ignore-whitespace ${CMAKE_CURRENT_SOURCE_DIR}/patch/Disable-debug-build-log.patch)
     webrtc_command(
         NAME nolog
         COMMAND ${WEBRTC_NOLOG_COMMAND}
@@ -81,6 +81,17 @@ if(NOLOG)
         DEPENDS sync
     )
     list(APPEND WEBRTC_DOWNLOAD_DEPENDS nolog)
+endif()
+
+if(CUBBIT)
+    set(WEBRTC_LIBCXXABI_PATCH_COMMAND git apply --3way --ignore-space-change --ignore-whitespace ${CMAKE_CURRENT_SOURCE_DIR}/patch/libc++abi/Enable-cxa_thread_atexit-for-linux.patch)
+    webrtc_command(
+        NAME libcxxabi-patch
+        COMMAND ${WEBRTC_LIBCXXABI_PATCH_COMMAND}
+        WORKING_DIRECTORY ${WEBRTC_FOLDER}/src/buildtools/third_party/libc++abi
+        DEPENDS sync
+    )
+    list(APPEND WEBRTC_DOWNLOAD_DEPENDS libcxxabi-patch)
 endif()
 
 webrtc_command(
