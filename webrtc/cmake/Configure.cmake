@@ -7,8 +7,8 @@ webrtc_command(
 )
 
 if(APPLE)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET 10.14)
-    set(CMAKE_OSX_SYSROOT macosx10.14)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET 10.15)
+    set(CMAKE_OSX_SYSROOT macosx10.15)
 endif(APPLE)
 
 set(WEBRTC_SYSROOT_COMMAND python build/linux/sysroot_scripts/install-sysroot.py --arch=${WEBRTC_ARCH})
