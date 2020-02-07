@@ -1,27 +1,24 @@
-From 9ee6d58cdfe43ea238c702a13e785114114bb5f4 Mon Sep 17 00:00:00 2001
+From feb19bbebfcadf4a98bccbe074b5c6c499339afb Mon Sep 17 00:00:00 2001
 From: Alessio Paccoia <alessio.paccoia@cubbit.io>
-Date: Fri, 2 Aug 2019 18:30:21 +0200
+Date: Fri, 7 Feb 2020 12:42:45 +0100
 Subject: [PATCH] Enable cxa_thread_atexit for linux
 
 ---
- third_party/libc++abi/BUILD.gn | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ third_party/libc++abi/BUILD.gn | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/third_party/libc++abi/BUILD.gn b/third_party/libc++abi/BUILD.gn
-index 759327c..d0c35ad 100644
+index e571b86..fe9afef 100644
 --- a/third_party/libc++abi/BUILD.gn
 +++ b/third_party/libc++abi/BUILD.gn
-@@ -55,9 +55,7 @@ source_set("libc++abi") {
-     sources += [ "trunk/src/cxa_demangle.cpp" ]
-   }
- 
--  # This file should really be included on linux as well, but that
--  # would introduce an unwanted glibc 2.18 dependency.
--  if (is_fuchsia || (is_posix && !is_mac && !is_linux)) {
-+  if (is_fuchsia || (is_posix && !is_mac && is_linux)) {
+@@ -56,7 +56,7 @@ source_set("libc++abi") {
+
+   # This file should really be included on linux as well, but that
+   # would introduce an unwanted glibc 2.18 dependency.
+-  if (is_fuchsia || (is_posix && !is_mac && !is_ios && !is_linux)) {
++  if (is_fuchsia || (is_posix && !is_mac && !is_ios && is_linux)) {
      sources += [ "trunk/src/cxa_thread_atexit.cpp" ]
    }
- 
--- 
-2.22.0.windows.1
 
+--
+2.25.0.windows.1

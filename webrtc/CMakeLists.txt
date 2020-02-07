@@ -9,7 +9,8 @@ find_package(Git REQUIRED)
 
 include(DepotTools)
 
-set(WEBRTC_REVISION m74)
+# https://chromiumdash.appspot.com/branches
+set(WEBRTC_REVISION 3987)
 set(WEBRTC_GIT_REVISION branch-heads/${WEBRTC_REVISION})
 
 set(WEBRTC_FOLDER ${CMAKE_CURRENT_BINARY_DIR}/webrtc)

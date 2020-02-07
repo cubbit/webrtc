@@ -1,11 +1,3 @@
-set(WEBRTC_LAST_CHANGE_COMMAND python src/build/util/lastchange.py -o src/build/util/LASTCHANGE)
-webrtc_command(
-    NAME last-change
-    COMMAND ${WEBRTC_LAST_CHANGE_COMMAND}
-    WORKING_DIRECTORY ${WEBRTC_FOLDER}
-    DEPENDS download
-)
-
 if(APPLE)
     set(CMAKE_OSX_DEPLOYMENT_TARGET 10.14)
     set(CMAKE_OSX_SYSROOT macosx10.14)
@@ -16,7 +8,7 @@ webrtc_command(
     NAME sysroot
     COMMAND ${WEBRTC_SYSROOT_COMMAND}
     WORKING_DIRECTORY ${WEBRTC_FOLDER}/src
-    DEPENDS last-change
+    DEPENDS download
 )
 
 set(WEBRTC_CONFIGURE_COMMAND gn gen out/${WEBRTC_BUILD_TYPE} --args=${WEBRTC_GEN_ARGS})
