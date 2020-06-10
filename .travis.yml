@@ -93,10 +93,9 @@ deploy:
   provider: releases
   api_key:
     secure: I3h1kLnuLXNoXJJcAbr1xhkvvTFQgw0CjK+An7hdhpgZoHWE+ojeaXBnOHKa6m3M0O1exSoL5GNAzxRQjnYtNIrYj9X0x/1JaeKyaYlFs+ug9GuZ4DaBnRKJq03mX/RH2lh1kMmwgNK2E4Vpa0hLJmw+luM5Jp9G5CAUg/HN7QGeoVBHSlxOnd6DDuuduQVuszmDuv0zm93oo54i1DEhV2em3dVmG/MckKvpZYFxYTBCrsZhb6heSXskc1vF0807kYBBfMUwvVTpGJNOfMq6tQf0cWxbwJrMxvxBil+oKfP8X0adWUzprk8bhsrNCqDz0pZdYrWHxpSPe+rh+UH2cJ6q6Z2l3s3iYfYPnQVXAvyrxvFt7T7AWP6JpcQwOJeP2IYAEmFAHSqrC80oS0Ts/61oFIbqxXog2+W9CtJyAFG2kv2nWB99leHsTUFm+EAiLzY0HNN24AjxhbFbXNy0AtATdrzKnTOdW7SlYZQisns8PO8EikGNQtvgdMKyh9dnfUbWa82dri48CzJGzyao+SmgYYn2ZMVtZ8dHwJAz0Pz/UldjCRneaBFK4im9uCKDxQIMPrRQWkRCVGfRgX+CKoXMc67Q8pFcnq/L4MDqLRP+RIcKANYjrLH0YVCMppNqAXkOQDb8hT3ghf6gNGFhaZ/OnmdD59t7wt6KWTQP/rw=
-  name: $TRAVIS_TAG
+  name: m84-test
   on:
     repo: cubbit/webrtc
-    tags: true
   file_glob: true
   file: build/webrtc-*.zip
   skip_cleanup: true
