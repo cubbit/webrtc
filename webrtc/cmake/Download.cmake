@@ -54,14 +54,27 @@ if(NOLOG)
 endif()
 
 if(CUBBIT)
-    set(WEBRTC_LIBCXXABI_PATCH_COMMAND git apply --3way --ignore-space-change --ignore-whitespace ${CMAKE_CURRENT_SOURCE_DIR}/patch/libc++abi/Enable-cxa_thread_atexit-for-linux.patch)
-    webrtc_command(
-        NAME libcxxabi-patch
-        COMMAND ${WEBRTC_LIBCXXABI_PATCH_COMMAND}
-        WORKING_DIRECTORY ${WEBRTC_FOLDER}/src/buildtools/third_party/libc++abi
-        DEPENDS sync
-    )
-    list(APPEND WEBRTC_DOWNLOAD_DEPENDS libcxxabi-patch)
+    if(UNIX)
+        if(APPLE)
+            set(WEBRTC_SDK_PATCH_COMMAND git apply --3way --ignore-space-change --ignore-whitespace ${CMAKE_CURRENT_SOURCE_DIR}/patch/sdk/mac-sdk-find-updated.patch)
+            webrtc_command(
+                NAME sdk-patch
+                COMMAND ${WEBRTC_SDK_PATCH_COMMAND}
+                WORKING_DIRECTORY ${WEBRTC_FOLDER}/src/build/mac
+                DEPENDS sync
+            )
+            list(APPEND WEBRTC_DOWNLOAD_DEPENDS sdk-patch)
+        else()
+            set(WEBRTC_LIBCXXABI_PATCH_COMMAND git apply --3way --ignore-space-change --ignore-whitespace ${CMAKE_CURRENT_SOURCE_DIR}/patch/libc++abi/Enable-cxa_thread_atexit-for-linux.patch)
+            webrtc_command(
+                NAME libcxxabi-patch
+                COMMAND ${WEBRTC_LIBCXXABI_PATCH_COMMAND}
+                WORKING_DIRECTORY ${WEBRTC_FOLDER}/src/buildtools/third_party/libc++abi
+                DEPENDS sync
+            )
+            list(APPEND WEBRTC_DOWNLOAD_DEPENDS libcxxabi-patch)
+        endif()
+    endif()
 endif()
 
 if(WIN32)
